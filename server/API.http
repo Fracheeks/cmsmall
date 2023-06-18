@@ -1,0 +1,105 @@
+## Executes the login of a user
+POST http://localhost:3001/api/sessions HTTP/1.1
+content-type: application/json
+
+{
+    "username": "davide@test.com",
+    "password": "pwd"
+}
+###
+
+POST http://localhost:3001/api/sessions HTTP/1.1
+content-type: application/json
+
+{
+    "username": "admin@test.com",
+    "password": "pwd"
+}
+
+###
+
+## Checks if the user is still logged in
+GET http://localhost:3001/api/sessions/current HTTP/1.1
+
+###
+
+## Executes the logout of a user
+DELETE http://localhost:3001/api/sessions/current HTTP/1.1
+
+###
+
+## Gets all the pages
+GET http://localhost:3001/api/pages/all HTTP/1.1
+
+###
+
+## Gets only the pages that have been published
+GET http://localhost:3001/api/pages/draft HTTP/1.1
+
+###
+
+## Gets a specific page given the ID
+GET http://localhost:3001/api/page/3 HTTP/1.1
+
+###
+
+## Gets all the images
+GET http://localhost:3001/api/images HTTP/1.1
+
+###
+
+## Creates a new page
+POST http://localhost:3001/api/pages HTTP/1.1
+content-type: application/json
+
+{
+    "title": "Decima",
+    "publicationDate": "2023-09-30",
+    "components": [
+        {
+            "orderId": 1,
+            "type": "Header",
+            "content": "Another header content",
+            "imageId": null
+        },
+        {
+            "orderId": 2,
+            "type": "Paragraph",
+            "content": "Another paragraph content",
+            "imageId": null
+        }
+    ]
+}
+
+###
+
+##Updates an existing page
+PUT http://localhost:3001/api/pages/1 HTTP/1.1
+content-type: application/json
+
+{
+    "id": 1,
+    "title": "Terza",
+    "publicationDate": "2022-06-30",
+    "components": [
+        {
+            "orderId": 1,
+            "type": "Header",
+            "content": "Nothing here...",
+            "imageId": null
+        },
+        {
+            "orderId": 2,
+            "type": "Paragraph",
+            "content": "Another paragraph content",
+            "imageId": null
+        }
+    ]
+}
+
+###
+
+## Deletes a page
+DELETE http://localhost:3001/api/pages/2 HTTP/1.1
+
+###
