@@ -11,13 +11,6 @@ import { NotFoundLayout, LoginLayout, LoadingLayout, DefaultLayout } from './com
 
 import API from './API';
 
-const filters = {
-  all : 'all',
-  draft :  'draft', 
-  publish : 'published',
-  scheduled : 'scheduled',
-  };
-
 
 function App() {
   
@@ -34,7 +27,7 @@ function App() {
 
   const [message, setMessage] = useState('');
 
-  const [filter, setFilter] = useState(filters.all);
+  const [filter, setFilter] = useState('all');
 
   const handleErrors = (err) => {
     let msg = '';
@@ -84,7 +77,7 @@ function App() {
   useEffect(() => {
 
     if (dirty) {
-      API.getPages(filters.all)
+      API.getPages('all')
         .then(pages => {
 
           setPages(pages);
@@ -111,10 +104,10 @@ function App() {
   return (
     <BrowserRouter>
         <Container fluid className="App">
-          <Navigation logout={handleLogout} user={user} loggedIn={loggedIn} />
+          <Navigation logout={handleLogout} user={user} loggedIn={loggedIn} pagelist={pages}  setPages={setPages}/>
           <Routes>
           <Route path="/" element={
-            loading ? <LoadingLayout /> : <DefaultLayout  user={user} pagelist={pages} deletePage={deletePage}  filters={filters} />
+            loading ? <LoadingLayout /> : <DefaultLayout  user={user} pagelist={pages} deletePage={deletePage}  />
             } />
           <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin} /> : <Navigate replace to='/' />} />
           <Route path="*" element={<NotFoundLayout />} />

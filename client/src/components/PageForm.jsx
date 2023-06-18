@@ -16,7 +16,7 @@ import { AiOutlineVideoCameraAdd} from "react-icons/ai";
 
             <td>
             <Link to={`/viewPage/${props.page.id}`}>
-              <Button variant="light" className='mx-2'  disabled={props.userId} ><i class="bi bi-eye-fill"></i></Button>
+              <Button variant="light" className='mx-2'  disabled={props.userId} ><i className="bi bi-eye-fill"></i></Button>
             </Link>
             <Link to={`/updatePage/${props.page.id}`}>
               <Button variant="light" className='mx-2'  disabled={props.userId} ><i className='bi bi-pencil-square'></i></Button>
