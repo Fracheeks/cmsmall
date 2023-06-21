@@ -32,7 +32,7 @@ function LoginForm(props) {
   return (
     <Row className="vh-100 justify-content-md-center">
     <Col md={4} >
-    <h1 className="pb-3">Login</h1>
+    <h2 className="pb-3" style={{ textAlign: 'center', color: '#1560BD', marginTop: '5vh'  }} >Login</h2>
 
       <Form  onSubmit={handleSubmit}>
           <Alert
@@ -78,8 +78,15 @@ function LoginForm(props) {
 };
 
 function LogoutButton(props) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    props.logout();
+    props.setFilter('published')
+    navigate('/');
+  }
   return (
-    <Button variant="outline-light" onClick={props.logout}>Logout</Button>
+    <Button variant="outline-light" onClick={()=>handleLogout()}>Logout</Button>
   )
 }
 

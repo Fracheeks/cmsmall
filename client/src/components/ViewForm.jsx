@@ -1,15 +1,23 @@
-import React from 'react';
+import {React, useEffect} from 'react';
 import { Link,} from 'react-router-dom';
 import {Button } from 'react-bootstrap';
 
 function ViewForm(props) {
+
+  useEffect(() => {
+    document.body.style.backgroundColor = '#2F2F2F'	;
+
+    return () => {
+      document.body.style.backgroundColor = '';
+    };
+  }, []);
 
   if (!props.page) {
     return <div>Pagina non trovata</div>;
   }
 
   const gradientStyle = {
-    backgroundImage: 'linear-gradient(to bottom, #2F2F2F, #FFFFFF)',
+    backgroundImage: 'linear-gradient(to bottom, #6397D0, #2F2F2F	)',
   };
 
   return (
@@ -25,7 +33,7 @@ function ViewForm(props) {
         </p>
       </header>
 
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', color : "#FFFFFF"}}>
         <div style={{ width: '60%' }}>
           {props.page.components.map((component, index) => (
             <div key={index} style={{ textAlign: 'center' }}>

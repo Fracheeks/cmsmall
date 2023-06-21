@@ -45,9 +45,9 @@ const Navigation = (props) => {
   
 
   return (
-    <Navbar  style={{ backgroundColor: '#600000' }} expand="sm" variant="dark" className="navbar-padding">
-        <Navbar.Brand className="mx-5">
-        <i className="bi bi-file-earmark mx-2"/>CMSmall
+    <Navbar  style={{ backgroundColor: '#6397D0' }} expand="sm" variant="dark" className="navbar-padding">
+        <Navbar.Brand className="mx-5" style={{ fontSize: '30px' }}>
+        <i className ="bi bi-journals mx-2"/>CMSmall
         </Navbar.Brand>
       <Form className="my-2 my-lg-0 mx-auto d-sm-block" action="#" role="search" aria-label="Quick search" onSubmit={handleSubmit}>
       <Form.Control
@@ -70,7 +70,7 @@ const Navigation = (props) => {
           {!props.user && !props.user?.name && `You are not logged in `}
         </Navbar.Text>
         <Form className="mx-2">
-          {props.loggedIn ? <LogoutButton logout={props.logout} /> : <LoginButton />}
+          {props.loggedIn ? <LogoutButton logout={props.logout} setFilter={props.setFilter}/> : <LoginButton />}
         </Form>
       </Nav>
     </Navbar>
