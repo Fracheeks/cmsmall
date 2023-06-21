@@ -16,17 +16,6 @@ function DefaultLayout(props) {
     );
   }
 
-  function BackLayout(props) {
-       
-      return (
-        <Row className="vh-100">
-          <Col  bg="light" className="below-nav" id="left-sidebar">
-            <PageForm pagelist={props.pagelist} isFront={props.isFront} deletePage={props.deletePage} user={props.user} />
-          </Col>
-        </Row>
-      );
-    }
-
   function ViewLayout(props) {
 
     const { id } = useParams();

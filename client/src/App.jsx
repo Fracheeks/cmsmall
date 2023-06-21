@@ -118,9 +118,7 @@ function App() {
             } />
           <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin}/> : <Navigate replace to='/' />} />
           <Route path="*" element={<NotFoundLayout />} />
-          <Route path="/back-office" element={<BackLayout isFront = {isFront} user={user} pagelist={pages} deletePage={deletePage}  />} />
           <Route path="/viewPage/:id" element={ <ViewLayout isFront = {isFront} user={user} getPage = {getPage} /> } />
-
           </Routes>
 
           <Toast show={message !== ''} onClose={() => setMessage('')} delay={4000} autohide bg="danger">

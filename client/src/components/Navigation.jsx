@@ -34,7 +34,6 @@ const Navigation = (props) => {
 
   useEffect (() => {
     props.isFront? setRoute('Back-Office') : setRoute('Front-Office')
-    props.isFront ? navigate('/') : navigate('/back-office');
     props.isFront? props.setFilter('published') : props.setFilter('all')
   }, [props.isFront]);
 

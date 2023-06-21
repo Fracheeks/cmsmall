@@ -46,7 +46,7 @@ function ViewForm(props) {
           ))}
         </div>
       </div>
-      <Link to={props.isFront ? '/' : '/back-office'}>
+      <Link to='/'>
            <Button variant="light" className='mx-2'>
       <i className="bi bi-backspace-fill"></i>
             </Button>
