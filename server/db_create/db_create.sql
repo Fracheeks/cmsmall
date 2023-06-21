@@ -63,8 +63,8 @@ INSERT INTO "components" VALUES (8, 3, 3, "Image", NULL, 3);
 INSERT INTO "components" VALUES (9, 4, 1, "Header", "Topolino !", NULL);
 INSERT INTO "components" VALUES (10, 4, 2, "Paragraph", "Topolino, conosciuto negli Stati Uniti e in molti altri 
 Paesi come Mickey Mouse, è un personaggio immaginario dei fumetti e dei cartoni animati creato il 16 gennaio
- 1928 da Walt Disney e Ub Iwerks,[2] e successivamente sviluppato da Floyd Gottfredson,[3][4] fra i più famosi 
- fumettisti al mondo[3][4] e icona stessa della Walt Disney Company e della cultura popolare mondiale.[5]", NULL);
+ 1928 da Walt Disney e Ub Iwerks, e successivamente sviluppato da Floyd Gottfredson, fra i più famosi 
+ fumettisti al mondo e icona stessa della Walt Disney Company e della cultura popolare mondiale.", NULL);
 INSERT INTO "components" VALUES (11, 4, 3, "Image", NULL, 4);
 
 INSERT INTO "images" VALUES (1, "Iron Man", "./images/ironman.jpg");
