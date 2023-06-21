@@ -29,6 +29,7 @@ const getPages = async (filter) => {
 
     return sortedPages.map((page) => ({
         id: page.id,
+        authorId : page.authorId,
         author : page.authorName,
         title :  page.title, 
         creationDate : dayjs(page?.creationDate).format("YYYY-MM-DD"), 

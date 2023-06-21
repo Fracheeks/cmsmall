@@ -1,6 +1,6 @@
 import { React, useState, useEffect } from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
-import { Link,Outlet, useParams , useNavigate} from 'react-router-dom';
+import { Link,useParams , useNavigate} from 'react-router-dom';
 import PageForm from './PageForm';
 import {LoginForm} from  './Auth';
 import {ViewForm} from './ViewForm';
@@ -12,9 +12,6 @@ function DefaultLayout(props) {
         <Col  bg="light" className="below-nav" id="left-sidebar">
           <PageForm pagelist={props.pagelist} isFront={props.isFront} deletePage={props.deletePage} user={props.user} />
         </Col>
-        <Col md={8} xl={9} className="below-nav">
-          <Outlet/>
-        </Col>
       </Row>
     );
   }
@@ -25,9 +22,6 @@ function DefaultLayout(props) {
         <Row className="vh-100">
           <Col  bg="light" className="below-nav" id="left-sidebar">
             <PageForm pagelist={props.pagelist} isFront={props.isFront} deletePage={props.deletePage} user={props.user} />
-          </Col>
-          <Col md={8} xl={9} className="below-nav">
-            <Outlet/>
           </Col>
         </Row>
       );

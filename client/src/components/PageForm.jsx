@@ -16,10 +16,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
             {!props.isFront && ( <>
              <Link to={`/viewPage/${props.page.id}`}><Button variant="light" className='mx-2'>
                  <i className="bi bi-eye-fill"></i> </Button></Link>
+            { props.user.id === props.page.authorId && ( <>
              <Link to={`/updatePage/${props.page.id}`}><Button variant="light" className='mx-2'>
                  <i className='bi bi-pencil-square'></i> </Button> </Link>
-             <Button variant="light" onClick={props.deletePage(props.page.id)}>
-              <i className="bi bi-trash"></i></Button></>)}
+             <Button variant="light" onClick={() =>props.deletePage(props.page.id)}>
+              <i className="bi bi-trash"></i></Button></>)}</>)}
 
             </td>
           </tr>
@@ -29,6 +30,14 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
       
       function PageForm(props) {
+
+        if (props.pagelist.length == 0) {
+          return( <div>
+            <h2 style={{ textAlign: 'center', color : '#600000', margin: '10vh'}}>there're no elements</h2>
+             </div>
+          );
+        }
+
         return (
           <div>
              <Container fluid>
@@ -50,7 +59,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
             </thead>
             <tbody>
               {props.pagelist.map((page) =>
-                <MyRow page={page} key={page.id} isFront={props.isFront} deletePage={props.deletePage}/>)
+                <MyRow page={page} key={page.id} user={props.user} isFront={props.isFront} deletePage={props.deletePage}/>)
               }
             </tbody>
           </Table>

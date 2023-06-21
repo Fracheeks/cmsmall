@@ -8,17 +8,6 @@ function ViewForm(props) {
     return <div>Pagina non trovata</div>;
   }
 
-  if (props.user.id !== props.page.authorId) {
-    return( <div>
-      <h2 style={{ textAlign: 'center'}}>User not authorized</h2>
-         <Link to={props.isFront ? '/' : '/back-office'}>
-         <Button variant="light" className='mx-2'>
-        <i className="bi bi-backspace-fill"></i>
-       </Button></Link>
-       </div>
-    );
-  }
-
   const gradientStyle = {
     backgroundImage: 'linear-gradient(to bottom, #2F2F2F, #FFFFFF)',
   };
@@ -42,7 +31,9 @@ function ViewForm(props) {
             <div key={index} style={{ textAlign: 'center' }}>
               {component.type === 'Header' && <h3>{component.content}</h3>}
               {component.type === 'Paragraph' && <p>{component.content}</p>}
-              {component.type === 'Image' && <img src="/src/components/images/ironman.jpg" alt="Component Image" />}
+              {component.type === 'Image' && ( <div>
+             <img src={"/src/components/" + component.url} alt="Component Image" style={{ width: '300px', height: '200px', objectFit: 'contain' }} />
+             <p style={{ color: 'gray' }}>{"["+component.description+"]"}</p></div>)}
             </div>
           ))}
         </div>

@@ -59,9 +59,9 @@ INSERT INTO "components" VALUES (6, 3, 1, "Header", "SalTO", NULL);
 INSERT INTO "components" VALUES (7, 3, 2, "Header", "Edizione 2022/2023", NULL);
 INSERT INTO "components" VALUES (8, 3, 3, "Image", NULL, 3);
 
-INSERT INTO "images" VALUES (1, "Iron Man", "./images/ironman.png");
-INSERT INTO "images" VALUES (2, "Mountain", "./images/mountain");
-INSERT INTO "images" VALUES (3, "SalTO", "./images/salto.png");
-INSERT INTO "images" VALUES (4, "Sky", "./images/sky");
+INSERT INTO "images" VALUES (1, "Iron Man", "./images/ironman.jpg");
+INSERT INTO "images" VALUES (2, "Mountain", "./images/mountain.jpg");
+INSERT INTO "images" VALUES (3, "SalTO", "./images/salto.jpg");
+INSERT INTO "images" VALUES (4, "Sky", "./images/sky.jpg");
 
 COMMIT;
