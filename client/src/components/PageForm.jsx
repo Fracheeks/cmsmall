@@ -44,7 +44,6 @@ function PageForm(props) {
     );
   }
 
-  // Suddivide le cards in gruppi di tre per riga
   const cardsPerRow = 3;
   const rows = Math.ceil(props.pagelist.length / cardsPerRow);
 
