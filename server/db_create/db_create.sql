@@ -36,13 +36,14 @@ CREATE TABLE IF NOT EXISTS "images" (
 --password = 'pwd' for all
 INSERT INTO "users" VALUES (1, "Regular", 'francesca@test.com','Francesca', '123348dusd437840', 'bddfdc9b092918a7f65297b4ba534dfe306ed4d5d72708349ddadb99b1c526fb'); 
 INSERT INTO "users" VALUES (2,'Admin', 'admin@test.com','Admin', '123348pght437840', '6d2482e7d0760b6e9488763dfbfecfd00c08fdde9f2d87b417b515486fd5989b');
-INSERT INTO "users" VALUES (3,'Regular', 'regular@test.com','Regular', '123348male437840', 'c6cee0e593f5cd635c48a59150b2b7c23321d0170301e41f65dbfe428fc2d7fd');
+INSERT INTO "users" VALUES (3,'Regular', 'regular@test.com','Matteo', '123348male437840', 'c6cee0e593f5cd635c48a59150b2b7c23321d0170301e41f65dbfe428fc2d7fd');
 INSERT INTO "users" VALUES (4, "Regular", 'davide@test.com','Davide', '123348dusd437840', 'bddfdc9b092918a7f65297b4ba534dfe306ed4d5d72708349ddadb99b1c526fb'); 
 
 
 INSERT INTO "pages" VALUES (1, 1, 'Iron Man 4', '2023-06-10', '2023-06-11', "published");
 INSERT INTO "pages" VALUES (2, 1, 'PoliTo', '2022-06-10', '2023-08-10', "published");
 INSERT INTO "pages" VALUES (3, 2, 'SalTo', '2023-04-10', '2023-06-30', "draft");
+INSERT INTO "pages" VALUES (4, 3, 'Topolino', '2024-04-10', NULL , "scheduled");
 
 INSERT INTO "components" VALUES (1, 1, 1, "Header", "Robert Downey Jr. parla di un possibile ritorno in Iron Man 4?", NULL);
 INSERT INTO "components" VALUES (2, 1, 2, "Paragraph", "Iron Man, ossia Robert Downey Jr. è stato il volto del Marvel Cinematic
@@ -59,10 +60,16 @@ INSERT INTO "components" VALUES (5, 2, 2, "Paragraph", "Il 25 novembre si celebr
 INSERT INTO "components" VALUES (6, 3, 1, "Header", "SalTO", NULL);
 INSERT INTO "components" VALUES (7, 3, 2, "Header", "Edizione 2022/2023", NULL);
 INSERT INTO "components" VALUES (8, 3, 3, "Image", NULL, 3);
+INSERT INTO "components" VALUES (9, 4, 1, "Header", "Topolino !", NULL);
+INSERT INTO "components" VALUES (10, 4, 2, "Paragraph", "Topolino, conosciuto negli Stati Uniti e in molti altri 
+Paesi come Mickey Mouse, è un personaggio immaginario dei fumetti e dei cartoni animati creato il 16 gennaio
+ 1928 da Walt Disney e Ub Iwerks,[2] e successivamente sviluppato da Floyd Gottfredson,[3][4] fra i più famosi 
+ fumettisti al mondo[3][4] e icona stessa della Walt Disney Company e della cultura popolare mondiale.[5]", NULL);
+INSERT INTO "components" VALUES (11, 4, 3, "Image", NULL, 4);
 
 INSERT INTO "images" VALUES (1, "Iron Man", "./images/ironman.jpg");
 INSERT INTO "images" VALUES (2, "Mountain", "./images/mountain.jpg");
 INSERT INTO "images" VALUES (3, "SalTO", "./images/salto.jpg");
-INSERT INTO "images" VALUES (4, "Sky", "./images/sky.jpg");
+INSERT INTO "images" VALUES (4, "Topolino", "./images/topolino.jpg");
 
 COMMIT;

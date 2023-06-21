@@ -7,7 +7,7 @@ import { Container, Toast } from 'react-bootstrap/'
 import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 
 import { Navigation } from './components/Navigation';
-import { NotFoundLayout, LoginLayout, LoadingLayout, DefaultLayout , BackLayout, ViewLayout} from './components/PageLayout';
+import { NotFoundLayout, LoginLayout, LoadingLayout, DefaultLayout , ViewLayout} from './components/PageLayout';
 
 import API from './API';
 

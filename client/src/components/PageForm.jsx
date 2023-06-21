@@ -19,7 +19,7 @@ function MyCard(props) {
           <Link to={`/viewPage/${props.page.id}`} className="mx-2">
             <Button variant="light" style={{ backgroundColor: '#D9E9FF', color: '#1560BD' }}><i className="bi bi-eye-fill"></i></Button>
           </Link>
-          {!props.isFront && (props.user?.id === props.page.authorId || props.user?.role == "Admin") && (
+          {!props.isFront && props.user?.id === props.page.authorId && (
             <>
               <Link to={`/updatePage/${props.page.id}`} className="mx-2">
                 <Button variant="light" style={{ backgroundColor: '#D9E9FF', color: '#1560BD' }}><i className="bi bi-pencil-square"></i></Button>
@@ -44,9 +44,6 @@ function PageForm(props) {
     );
   }
 
-  const cardsPerRow = 3;
-  const rows = Math.ceil(props.pagelist.length / cardsPerRow);
-
   return (
     <div>
       <Container fluid>
@@ -59,19 +56,17 @@ function PageForm(props) {
           <Loading />
         ) : (
           <>
-            {Array.from({ length: rows }).map((_, rowIndex) => (
-              <Row key={rowIndex}>
-                {props.pagelist.slice(rowIndex * cardsPerRow, (rowIndex + 1) * cardsPerRow).map((page) => (
-                  <MyCard
-                    key={page.id}
-                    page={page}
-                    user={props.user}
-                    isFront={props.isFront}
-                    deletePage={props.deletePage}
-                  />
-                ))}
-              </Row>
-            ))}
+            <Row>
+              {props.pagelist.map((page) => (
+                <MyCard
+                  key={page.id}
+                  page={page}
+                  user={props.user}
+                  isFront={props.isFront}
+                  deletePage={props.deletePage}
+                />
+              ))}
+            </Row>
             {!props.isFront && (
               <Link to="addPage">
                 <Button variant="light" style={{ backgroundColor: '#FFFFFF', color: '#1560BD' }}>

@@ -74,4 +74,4 @@ function LoginLayout(props) {
   );
 }
 
-export {  NotFoundLayout, DefaultLayout, LoadingLayout, LoginLayout , ViewLayout, BackLayout}; 
+export {  NotFoundLayout, DefaultLayout, LoadingLayout, LoginLayout , ViewLayout}; 
