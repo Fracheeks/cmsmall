@@ -12,7 +12,7 @@ const db = new sqlite.Database('pages.db', (err) => {
 
 exports.getPage = (pageId) => {
   return new Promise((resolve, reject) => {
-    const sql = 'SELECT * FROM pages WHERE id = ?';
+    const sql = 'SELECT pages.*, users.name AS authorName FROM pages JOIN users ON pages.authorId = users.id WHERE pages.id = ?';
     db.get(sql, [pageId], (err, row) => {
       if (err) {
         reject(err);
@@ -21,8 +21,7 @@ exports.getPage = (pageId) => {
       if (row == undefined) {
         resolve({error: 'Page not found.'});
       } else {
-        const page = Object.assign({}, row)
-        resolve(page);
+        resolve(row);
       }
     });
   });
@@ -30,8 +29,8 @@ exports.getPage = (pageId) => {
 
 exports.getComponents = (pageId) => {
     return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM components WHERE pageId = ?';
-      db.get(sql, [pageId], (err, rows) => {
+      const sql = 'SELECT components.*, images.url AS url , images.name AS description FROM components LEFT JOIN images ON components.imageId = images.id WHERE components.pageId = ?';
+      db.all(sql, [pageId], (err, rows) => {
         if (err) {
           reject(err);
           return;
@@ -39,8 +38,24 @@ exports.getComponents = (pageId) => {
         if (rows == undefined) {
           resolve({error: 'components not found.'});
         } else {
-          const components = Object.assign({}, rows)
-          resolve(components);
+          resolve(rows);
+        }
+      });
+    });
+  };
+
+  exports.getImages = (id) => {
+    return new Promise((resolve, reject) => {
+      const sql = 'SELECT * FROM images WHERE id = ?';
+      db.get(sql, [id], (err, rows) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+        if (rows == undefined) {
+          resolve({error: 'components not found.'});
+        } else {
+          resolve(rows);
         }
       });
     });
@@ -52,8 +67,12 @@ exports.getComponents = (pageId) => {
       let params;
   
       switch (filter) {
-        case "all":
-          sql = 'SELECT pages.*, users.name AS authorName FROM pages JOIN users ON pages.authorId = users.id';
+        case "published":
+          sql = 'SELECT pages.*, users.name AS authorName FROM pages JOIN users ON pages.authorId = users.id WHERE pages.status = ?';
+          params = [filter]
+          break;
+        case "all" :
+          sql ='SELECT pages.*, users.name AS authorName FROM pages JOIN users ON pages.authorId = users.id '
           break;
         default:
         sql = 'SELECT pages.*, users.name AS authorName FROM pages JOIN users ON pages.authorId = users.id WHERE pages.status = ? AND athorId = ?';

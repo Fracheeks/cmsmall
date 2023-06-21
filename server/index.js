@@ -159,11 +159,9 @@ app.get('/api/components/:id',
 );
 
 const defineStatus = (publicationDate) =>{
-
   if (publicationDate == NULL)
         return 'draft';
-
-  return publicationDate.isBefore(dayjs().format('YYYY-MM-DD')) ? 'piblished' : 'scheduled';
+  return publicationDate.isBefore(dayjs().format('YYYY-MM-DD')) ? 'published' : 'scheduled';
 }
 
 app.post('/api/pages', 
@@ -279,14 +277,14 @@ app.delete('/api/pages/:id',
       const resultPage = await pagesDao.deletePage(req.params.id);
 
       if (resultPage !== null)
-      return res.status(400).json(result); 
+      return res.status(400).json(resultPage); 
 
       const resultComps = await pagesDao.deleteComponents(req.params.id);
 
       if (resultComps == null)
         return res.status(200).json({}); 
       else
-        return res.status(404).json(result);
+        return res.status(404).json(resultComps);
     } catch (err) {
       res.status(503).json({ error: `Database error during the deletion of page ${req.params.id}: ${err} ` });
     }

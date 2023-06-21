@@ -2,12 +2,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.css';
 
-import { React, useState, useEffect, useContext } from 'react';
+import { React, useState, useEffect } from 'react';
 import { Container, Toast } from 'react-bootstrap/'
-import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 
 import { Navigation } from './components/Navigation';
-import { NotFoundLayout, LoginLayout, LoadingLayout, DefaultLayout } from './components/PageLayout';
+import { NotFoundLayout, LoginLayout, LoadingLayout, DefaultLayout , BackLayout, ViewLayout} from './components/PageLayout';
 
 import API from './API';
 
@@ -27,7 +27,9 @@ function App() {
 
   const [message, setMessage] = useState('');
 
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('published');
+
+  const [isFront, setFront] = useState(true);
 
   const handleErrors = (err) => {
     let msg = '';
@@ -77,7 +79,7 @@ function App() {
   useEffect(() => {
 
     if (dirty) {
-      API.getPages('all')
+      API.getPages(filter)
         .then(pages => {
 
           setPages(pages);
@@ -87,7 +89,7 @@ function App() {
           handleErrors(e); setDirty(false); 
         } ); 
     }
-  }, [filter]);
+  }, [dirty]);
 
   const deletePage = (pageId) => {
     API.deletePage(pageId)
@@ -101,16 +103,24 @@ function App() {
       .catch(e => handleErrors(e)); 
   }
 
+  const getPage = (pageId) => {
+    return API.getPage(pageId)
+  }
+
   return (
     <BrowserRouter>
         <Container fluid className="App">
-          <Navigation logout={handleLogout} user={user} loggedIn={loggedIn} pagelist={pages}  setPages={setPages}/>
+          <Navigation isFront = {isFront} setFilter={setFilter} setFront={setFront} logout={handleLogout} user={user} 
+           loggedIn={loggedIn} pagelist={pages}  setPages={setPages} filter={filter} />
           <Routes>
-          <Route path="/" element={
-            loading ? <LoadingLayout /> : <DefaultLayout  user={user} pagelist={pages} deletePage={deletePage}  />
+          <Route path="/" element={loading ? <LoadingLayout /> : 
+          <DefaultLayout  user={user} isFront = {isFront} pagelist={pages} deletePage={deletePage}  />
             } />
           <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin} /> : <Navigate replace to='/' />} />
           <Route path="*" element={<NotFoundLayout />} />
+          <Route path="/back-office" element={<BackLayout isFront = {isFront} user={user} pagelist={pages} deletePage={deletePage}  />} />
+          <Route path="/viewPage/:id" element={ <ViewLayout isFront = {isFront} user={user} getPage = {getPage} /> } />
+
           </Routes>
 
           <Toast show={message !== ''} onClose={() => setMessage('')} delay={4000} autohide bg="danger">

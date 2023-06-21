@@ -64,7 +64,7 @@ function LoginForm(props) {
                 variant="outlined"
                 onClick={handlePassword}
               >
-                {isVisible ? <i class="bi bi-eye-slash"></i> : <i class="bi bi-eye"></i>}
+                {isVisible ? <i className="bi bi-eye-slash"></i> : <i className="bi bi-eye"></i>}
               </Button>
               </InputGroup>
           </Form.Group>

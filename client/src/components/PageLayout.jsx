@@ -1,15 +1,16 @@
-import { React, useContext, useState, useEffect } from 'react';
-import { Row, Col, Button, Spinner } from 'react-bootstrap';
-import { Link, useParams, useLocation, Outlet } from 'react-router-dom';
+import { React, useState, useEffect } from 'react';
+import { Row, Col, Button } from 'react-bootstrap';
+import { Link,Outlet, useParams , useNavigate} from 'react-router-dom';
 import PageForm from './PageForm';
-import { LoginForm } from './Auth';
+import {LoginForm} from  './Auth';
+import {ViewForm} from './ViewForm';
 
 function DefaultLayout(props) {
-    
+
     return (
       <Row className="vh-100">
         <Col  bg="light" className="below-nav" id="left-sidebar">
-          <PageForm pagelist={props.pagelist}  deletePage={props.deletePage} user={props.user} />
+          <PageForm pagelist={props.pagelist} isFront={props.isFront} deletePage={props.deletePage} user={props.user} />
         </Col>
         <Col md={8} xl={9} className="below-nav">
           <Outlet/>
@@ -18,7 +19,44 @@ function DefaultLayout(props) {
     );
   }
 
+  function BackLayout(props) {
+       
+      return (
+        <Row className="vh-100">
+          <Col  bg="light" className="below-nav" id="left-sidebar">
+            <PageForm pagelist={props.pagelist} isFront={props.isFront} deletePage={props.deletePage} user={props.user} />
+          </Col>
+          <Col md={8} xl={9} className="below-nav">
+            <Outlet/>
+          </Col>
+        </Row>
+      );
+    }
+
+  function ViewLayout(props) {
+
+    const { id } = useParams();
+    const [page, setPage] = useState(null);
+  
+    useEffect(() => {
+      props.getPage(id).then((p) => {
+        setPage(p);
+      });
+    }, [id]);
+
+
+    return (
+      <Row className="vh-100">
+        <Col  bg="light" className="below-nav" id="left-sidebar">
+          <ViewForm  isFront = {props.isFront} page={page} user={props.user} />
+        </Col>
+      </Row>
+    );
+  }
+
 function NotFoundLayout() {
+  const navigate = useNavigate();
+
     return(
         <>
           <h2>This is not the route you are looking for!</h2>
@@ -28,6 +66,7 @@ function NotFoundLayout() {
         </>
     );
   }
+
 
 
 function LoadingLayout(props) {
@@ -52,4 +91,4 @@ function LoginLayout(props) {
   );
 }
 
-export {  NotFoundLayout, DefaultLayout, LoadingLayout, LoginLayout }; 
+export {  NotFoundLayout, DefaultLayout, LoadingLayout, LoginLayout , ViewLayout, BackLayout}; 

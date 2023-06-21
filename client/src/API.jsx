@@ -5,66 +5,96 @@ const SERVER_URL = 'http://localhost:3001/api/';
 
 const getPages = async (filter) => {
 
-       const response  =  filter == 'all' 
-          ? await fetch(SERVER_URL + 'pages/all')
-          : await fetch(SERVER_URL + 'pages/filter=' + filter, { credentials: 'include' })
+       const response  =  filter == 'published' 
+          ? await fetch(SERVER_URL + 'pages/published')
+          : await fetch(SERVER_URL + 'pages/' + filter, { credentials: 'include' })
 
     if(response.ok){
       const pages  = await response.json();
-    return pages.map((page) => ({
+
+      const sortedPages = pages.sort((a, b) => {
+      const dateA = dayjs(a.publicationDate);
+      const dateB = dayjs(b.publicationDate);
+      
+      if (dateA.isValid() && dateB.isValid()) {
+        return dateB - dateA;
+      } else if (dateA.isValid() && !dateB.isValid()) {
+        return -1; // Metti a precedenza le pagine con data di pubblicazione valida
+      } else if (!dateA.isValid() && dateB.isValid()) {
+        return 1; // Metti a precedenza le pagine con data di pubblicazione valida
+      } else {
+        return 0; // Le due date sono entrambe null, mantieni l'ordine originale
+      }
+    });
+
+    return sortedPages.map((page) => ({
         id: page.id,
         author : page.authorName,
         title :  page.title, 
-        creationDate : dayjs(page?.creationDate), 
-        publicationDate : dayjs(page?.publicationDate),
+        creationDate : dayjs(page?.creationDate).format("YYYY-MM-DD"), 
+        publicationDate : dayjs(page?.publicationDate).format("YYYY-MM-DD"),
         status : page.status
      } ))
   }
 }
 
 const getPage = async (pageId) => {
-const page  = getJson( fetch(SERVER_URL + 'page/' + pageId, { credentials: 'include' }))
-const components  = getJson( fetch(SERVER_URL + 'components/' + pageId, { credentials: 'include' }))
+const responsePage = await fetch(SERVER_URL + 'page/' + pageId, { credentials: 'include' })
+const responseComponents  =  await fetch(SERVER_URL + 'components/' + pageId, { credentials: 'include' })
 
-return Object.assign({}, [page,components]);
+const page  = await responsePage.json();
+const components  = await responseComponents.json();
+return ({
+  id: page.id,
+  authorId : page.authorId,
+  author : page.authorName,
+  title :  page.title, 
+  creationDate : dayjs(page?.creationDate).format("YYYY-MM-DD"), 
+  publicationDate : dayjs(page?.publicationDate).format("YYYY-MM-DD"),
+  status : page.status,
+  components : components
+    }) 
 }
 
 
-function updatePage(film) {
+const updatePage = async (film) =>{
   if (page && page.publicationDate && (page.publicationDate instanceof dayjs))
       page.publicationDate = page.publicationDate.format("YYYY-MM-DD");
-  return getJson(
-    fetch(SERVER_URL + "pages/" + page.id, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(page)
-    })
-  )
+  
+      const response =  await fetch(SERVER_URL + "pages/" + page.id, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(page)
+      })
+
+  return response.json();
 }
 
-function addPage(page) {
-  return getJson(
-    fetch(SERVER_URL + "pages/", {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(page) 
-    })
-  )
+const addPage = async (page) => {
+
+const response = await
+fetch(SERVER_URL + "pages/", {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  credentials: 'include',
+  body: JSON.stringify(page) 
+})
+  return response.json();
 }
 
-function deleteFilm(pageId) {
-  return getJson(
-    fetch(SERVER_URL + "pages/" + pageId, {
-      method: 'DELETE',
-      credentials: 'include'
-    })
-  )
+const deletePage = async (pageId) => {
+
+const response = await
+fetch(SERVER_URL + "pages/" + pageId, {
+  method: 'DELETE',
+  credentials: 'include'
+})
+  return response.json();
 }
 
 
@@ -106,5 +136,5 @@ async function getUserInfo() {
   }
 }
 
-const API = {logIn, getUserInfo, logOut, getPages};
+const API = {logIn, getUserInfo, logOut, getPages, getPage, deletePage};
 export default API;

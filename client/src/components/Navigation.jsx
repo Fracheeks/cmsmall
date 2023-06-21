@@ -9,6 +9,7 @@ import API from '../API';
 const Navigation = (props) => {
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [route, setRoute] = useState('Front-office');  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -20,29 +21,31 @@ const Navigation = (props) => {
     props.setPages(filteredItems)
   };
 
+  const handleRouteChange = () => {
+    props.setFront(!props.isFront)}
+
   useEffect(() => {
     if (searchQuery === '') {
       handleReset();
     }
   }, [searchQuery]);
   
-  
-  const [isFront, setFront] = useState(true);
   const navigate = useNavigate();
 
-  const handleRouteChange = () => {
-    setFront(!isFront);
-    isFront ? navigate('/') : navigate('/back-office');
-  };
+  useEffect (() => {
+    props.isFront? setRoute('Back-Office') : setRoute('Front-Office')
+    props.isFront ? navigate('/') : navigate('/back-office');
+    props.isFront? props.setFilter('published') : props.setFilter('all')
+  }, [props.isFront]);
 
   const handleReset = () => {
     setSearchQuery('');
-    API.getPages('all').then((pages) => { props.setPages(pages); });
+    API.getPages(props.filter).then((pages) => { props.setPages(pages); });
   };
   
 
   return (
-    <Navbar bg="dark" expand="sm" variant="dark" className="navbar-padding">
+    <Navbar  style={{ backgroundColor: '#600000' }} expand="sm" variant="dark" className="navbar-padding">
         <Navbar.Brand className="mx-5">
         <i className="bi bi-file-earmark mx-2"/>CMSmall
         </Navbar.Brand>
@@ -58,8 +61,8 @@ const Navigation = (props) => {
       </Form> 
        <Nav className="ml-md-auto">
         {props.user && props.user.name && (
-          <Nav.Link onClick={handleRouteChange}>
-            {isFront ? 'Back-Office' : 'Front-Office'}
+          <Nav.Link onClick = {handleRouteChange}>
+            {route}
           </Nav.Link>
         )}
         <Navbar.Text className="mx-2">
