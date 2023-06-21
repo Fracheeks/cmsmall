@@ -35,6 +35,7 @@ const Navigation = (props) => {
   useEffect (() => {
     props.isFront? setRoute('Back-Office') : setRoute('Front-Office')
     props.isFront? props.setFilter('published') : props.setFilter('all')
+    props.setOpsNavbar(true);
   }, [props.isFront]);
 
   const handleReset = () => {
@@ -48,6 +49,7 @@ const Navigation = (props) => {
         <Navbar.Brand className="mx-5" style={{ fontSize: '30px' }}>
         <i className ="bi bi-journals mx-2"/>CMSmall
         </Navbar.Brand>
+    { props.opsNavbar && ( <>
       <Form className="my-2 my-lg-0 mx-auto d-sm-block" action="#" role="search" aria-label="Quick search" onSubmit={handleSubmit}>
       <Form.Control
         className="mr-sm-2"
@@ -57,7 +59,7 @@ const Navigation = (props) => {
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
-      </Form> 
+      </Form>
        <Nav className="ml-md-auto">
         {props.user && props.user.name && (
           <Nav.Link onClick = {handleRouteChange}>
@@ -71,7 +73,7 @@ const Navigation = (props) => {
         <Form className="mx-2">
           {props.loggedIn ? <LogoutButton logout={props.logout} setFilter={props.setFilter}/> : <LoginButton />}
         </Form>
-      </Nav>
+      </Nav></> )}
     </Navbar>
   );
 }

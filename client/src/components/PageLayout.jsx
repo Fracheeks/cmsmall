@@ -24,6 +24,7 @@ function DefaultLayout(props) {
     useEffect(() => {
       props.getPage(id).then((p) => {
         setPage(p);
+        props.setOpsNavbar(false)
       });
     }, [id]);
 
@@ -31,7 +32,7 @@ function DefaultLayout(props) {
     return (
       <Row className="vh-100">
         <Col  bg="light" className="below-nav" id="left-sidebar">
-          <ViewForm  isFront = {props.isFront} page={page} user={props.user} />
+          <ViewForm  setOpsNavbar = {props.setOpsNavbar}  isFront = {props.isFront} page={page} user={props.user} />
         </Col>
       </Row>
     );

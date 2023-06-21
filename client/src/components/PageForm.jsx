@@ -4,6 +4,7 @@ import { Button, Card, Container, Alert, Row, Col } from 'react-bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function MyCard(props) {
+
   return (
     <Col md={4} className="my-3">
       <Card style={{ backgroundColor: '#D9E9FF' }}>

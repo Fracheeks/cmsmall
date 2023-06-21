@@ -1,8 +1,16 @@
 import {React, useEffect} from 'react';
-import { Link,} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import {Button } from 'react-bootstrap';
 
 function ViewForm(props) {
+
+  const navigate = useNavigate();
+
+  const handleBackRoute = () => {
+    
+    props.setOpsNavbar(true);
+    navigate('/');
+  }
 
   useEffect(() => {
     document.body.style.backgroundColor = '#2F2F2F'	;
@@ -46,12 +54,9 @@ function ViewForm(props) {
           ))}
         </div>
       </div>
-      <Link to='/'>
-           <Button variant="light" className='mx-2'>
+           <Button variant="light" className='mx-2' onClick = {() => handleBackRoute()}>
       <i className="bi bi-backspace-fill"></i>
             </Button>
-      </Link>
-
     </div>
   );
 }

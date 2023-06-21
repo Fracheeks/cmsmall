@@ -31,6 +31,9 @@ function App() {
 
   const [isFront, setFront] = useState(true);
 
+  const [opsNavbar, setOpsNavbar] = useState(true);
+
+
   const handleErrors = (err) => {
     let msg = '';
     if (err.error) msg = err.error;
@@ -110,7 +113,7 @@ function App() {
   return (
     <BrowserRouter>
         <Container fluid className="App">
-          <Navigation isFront = {isFront} setFilter={setFilter} setFront={setFront} logout={handleLogout} user={user} 
+          <Navigation opsNavbar = {opsNavbar} setOpsNavbar = {setOpsNavbar}  isFront = {isFront} setFilter={setFilter} setFront={setFront} logout={handleLogout} user={user} 
            loggedIn={loggedIn} pagelist={pages}  setPages={setPages} filter={filter} />
           <Routes>
           <Route path="/" element={loading ? <LoadingLayout /> : 
@@ -118,7 +121,7 @@ function App() {
             } />
           <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin}/> : <Navigate replace to='/' />} />
           <Route path="*" element={<NotFoundLayout />} />
-          <Route path="/viewPage/:id" element={ <ViewLayout isFront = {isFront} user={user} getPage = {getPage} /> } />
+          <Route path="/viewPage/:id" element={ <ViewLayout setOpsNavbar = {setOpsNavbar}  isFront = {isFront} user={user} getPage = {getPage} /> } />
           </Routes>
 
           <Toast show={message !== ''} onClose={() => setMessage('')} delay={4000} autohide bg="danger">
