@@ -43,10 +43,10 @@ function LoginForm(props) {
             {errorMessage}
           </Alert>
           <Form.Group className="mb-3" controlId="username">
-            <Form.Label>email</Form.Label>
+            <Form.Label>Email</Form.Label>
             <Form.Control
               type="email"
-              value={username} placeholder="Example: francesca@test.com"
+              value={username} placeholder="Enter the email"
               onChange={(ev) => setUsername(ev.target.value)}
               required={true}
             />
