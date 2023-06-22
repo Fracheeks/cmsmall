@@ -188,7 +188,7 @@ app.post('/api/pages',
     const components  = req.body.components.map((e) => {
 
      return {  
-        pageId : result.id,
+        pageId : resultPage.id,
         orderId : e.orderId,
         type : e.type,
         content : e.content,

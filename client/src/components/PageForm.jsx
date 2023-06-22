@@ -22,7 +22,7 @@ function MyCard(props) {
           </Link>
           {!props.isFront && (props.user?.id === props.page.authorId || props.user.role == 'Admin') && (
             <>
-              <Link to={`/updatePage/${props.page.id}`} className="mx-2">
+              <Link to={`/editPage/${props.page.id}`} className="mx-2">
                 <Button variant="light" style={{ backgroundColor: '#D9E9FF', color: '#1560BD' }}><i className="bi bi-pencil-square"></i></Button>
               </Link>
               <Button variant="light" style={{ backgroundColor: '#D9E9FF', color: '#1560BD' }} onClick={() => props.deletePage(props.page.id)}>

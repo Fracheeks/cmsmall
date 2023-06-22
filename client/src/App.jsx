@@ -7,7 +7,7 @@ import { Container, Toast } from 'react-bootstrap/'
 import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
 
 import { Navigation } from './components/Navigation';
-import { NotFoundLayout, LoginLayout, LoadingLayout, DefaultLayout , ViewLayout} from './components/PageLayout';
+import { NotFoundLayout, LoginLayout, LoadingLayout, DefaultLayout , ViewLayout, EditPageLayout, AddPageLayout} from './components/PageLayout';
 
 import API from './API';
 
@@ -100,8 +100,14 @@ function App() {
       .catch(e => handleErrors(e)); 
   }
 
-  const updatePage = (page) => {
-    API.updateFilm(page)
+  const editPage = (page) => {
+    API.updatePage(page)
+      .then(() => { setDirty(true); })
+      .catch(e => handleErrors(e)); 
+  }
+
+  const addPage = (page) => {
+    API.addPage(page)
       .then(() => { setDirty(true); })
       .catch(e => handleErrors(e)); 
   }
@@ -112,9 +118,10 @@ function App() {
 
   return (
     <BrowserRouter>
-        <Container fluid className="App">
           <Navigation opsNavbar = {opsNavbar} setOpsNavbar = {setOpsNavbar}  isFront = {isFront} setFilter={setFilter} setFront={setFront} logout={handleLogout} user={user} 
            loggedIn={loggedIn} pagelist={pages}  setPages={setPages} filter={filter} />
+       <Container fluid className="App">
+
           <Routes>
           <Route path="/" element={loading ? <LoadingLayout /> : 
           <DefaultLayout  user={user} isFront = {isFront} pagelist={pages} deletePage={deletePage}  />
@@ -122,6 +129,8 @@ function App() {
           <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin}/> : <Navigate replace to='/' />} />
           <Route path="*" element={<NotFoundLayout />} />
           <Route path="/viewPage/:id" element={ <ViewLayout setOpsNavbar = {setOpsNavbar}  isFront = {isFront} user={user} getPage = {getPage} /> } />
+          <Route path="/editPage/:pageId" element={ <EditPageLayout setOpsNavbar = {setOpsNavbar} user={user} addPage={addPage} getPage = {getPage} /> } />
+          <Route path="/addPage" element={ <addPageLayout setOpsNavbar = {setOpsNavbar} user={user} editPage={editPage}/> } />
           </Routes>
 
           <Toast show={message !== ''} onClose={() => setMessage('')} delay={4000} autohide bg="danger">

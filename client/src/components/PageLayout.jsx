@@ -4,6 +4,7 @@ import { Link,useParams , useNavigate} from 'react-router-dom';
 import PageForm from './PageForm';
 import {LoginForm} from  './Auth';
 import {ViewForm} from './ViewForm';
+import Page from './Page';
 
 function DefaultLayout(props) {
 
@@ -11,6 +12,41 @@ function DefaultLayout(props) {
       <Row className="vh-100">
         <Col  bg="light" className="below-nav" id="left-sidebar">
           <PageForm pagelist={props.pagelist} isFront={props.isFront} deletePage={props.deletePage} user={props.user} />
+        </Col>
+      </Row>
+    );
+  }
+
+
+  function EditPageLayout(props) {
+
+    const { pageId } = useParams();
+    const [page, setPage] = useState(null);
+  
+    useEffect(() => {
+      props.getPage(pageId).then((p) => {
+        setPage(p);
+        props.setOpsNavbar(false)
+      });
+    }, [pageId]);
+
+    return (
+      <Row className="vh-100">
+        <Col  bg="light" className="below-nav" id="left-sidebar">
+          <Page page={page} editFilm={props.editFilm} user={props.user} setOpsNavbar = {props.setOpsNavbar} />
+        </Col>
+      </Row>
+    );
+  }
+
+  function AddPageLayout(props) {
+  
+    props.setOpsNavbar(false)
+
+    return (
+      <Row className="vh-100">
+        <Col  bg="light" className="below-nav" id="left-sidebar">
+          <Page addFilm={props.addFilm} user={props.user} setOpsNavbar = {props.setOpsNavbar}/>
         </Col>
       </Row>
     );
@@ -75,4 +111,4 @@ function LoginLayout(props) {
   );
 }
 
-export {  NotFoundLayout, DefaultLayout, LoadingLayout, LoginLayout , ViewLayout}; 
+export {  NotFoundLayout, DefaultLayout, LoadingLayout, LoginLayout , ViewLayout, EditPageLayout, AddPageLayout}; 
