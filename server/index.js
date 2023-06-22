@@ -168,7 +168,7 @@ app.post('/api/pages',
   isLoggedIn,
   [ verifyComps,
     check('title').isLength({min: 1, max:160}),
-    check('publicationPage').isLength({min: 10, max: 10}).isISO8601({strict: true}).optional({checkFalsy: true}),
+    check('publicationDate').isLength({min: 10, max: 10}).isISO8601({strict: true}).optional({checkFalsy: true}),
   ],
   async (req, res) => {
     const errors = validationResult(req).formatWith(errorFormatter); // format error message
@@ -211,7 +211,7 @@ app.put('/api/pages/:id',
   [ verifyComps,
     check('id').isInt(),
     check('title').isLength({min: 1, max:160}),
-    check('publicationPage').isLength({min: 10, max: 10}).isISO8601({strict: true}).optional({checkFalsy: true}),
+    check('publicationDate').isLength({min: 10, max: 10}).isISO8601({strict: true}).optional({checkFalsy: true}),
   ],
   async (req, res) => {
     const errors = validationResult(req).formatWith(errorFormatter); // format error message

@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS "images" (
 --password = 'pwd' for all
 INSERT INTO "users" VALUES (1, "Regular", 'francesca@test.com','Francesca', '123348dusd437840', 'bddfdc9b092918a7f65297b4ba534dfe306ed4d5d72708349ddadb99b1c526fb'); 
 INSERT INTO "users" VALUES (2,'Admin', 'admin@test.com','Admin', '123348pght437840', '6d2482e7d0760b6e9488763dfbfecfd00c08fdde9f2d87b417b515486fd5989b');
-INSERT INTO "users" VALUES (3,'Regular', 'regular@test.com','Matteo', '123348male437840', 'c6cee0e593f5cd635c48a59150b2b7c23321d0170301e41f65dbfe428fc2d7fd');
+INSERT INTO "users" VALUES (3,'Regular', 'matteo@test.com','Matteo', '123348male437840', 'c6cee0e593f5cd635c48a59150b2b7c23321d0170301e41f65dbfe428fc2d7fd');
 INSERT INTO "users" VALUES (4, "Regular", 'davide@test.com','Davide', '123348dusd437840', 'bddfdc9b092918a7f65297b4ba534dfe306ed4d5d72708349ddadb99b1c526fb'); 
 
 

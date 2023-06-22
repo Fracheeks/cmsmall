@@ -39,7 +39,7 @@ GET http://localhost:3001/api/pages/draft HTTP/1.1
 ###
 
 ## Gets a specific page given the ID
-GET http://localhost:3001/api/components/1 HTTP/1.1
+GET http://localhost:3001/api/page/1 HTTP/1.1
 
 ###
 
