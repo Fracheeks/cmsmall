@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {useState, useEffect} from 'react';
-import {Form,  Row, Col} from 'react-bootstrap';
+import {Form,  Row, Col, Button} from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import API from '../API';
 
@@ -44,7 +44,14 @@ const Component = (props) => {
         );
       }, [orderId, content, type, imageId]);
       
-
+const deleteComponent = () => {
+        props.setComponents((prevComponents) =>
+          prevComponents.filter((_, index) => index !== props.index)
+        );
+        props.setNumComps((num)=>num-1)
+        props.setIsDeleted((isDeleted) => !isDeleted);
+    }
+      
 
   const handleOrderIdChange = (event) => {
     setOrderId(event.target.value);
@@ -82,7 +89,7 @@ const Component = (props) => {
           { type === 'Image' && selectedImage?  <>
           <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }}>
                     <Form.Label>Please select an image:</Form.Label>
-                    <Form.Select value={imageId} onChange={handleImageChange}>
+                    <Form.Select value={selectedImage.id} onChange={handleImageChange}>
                         {images.map((image) => (
                                  <option key={image.id} value={image.id}>
                               {image.name}
@@ -106,10 +113,13 @@ const Component = (props) => {
         <img src={"/src/components/" + selectedImage.url} alt="Component Image" style={{ marginTop: '7vh', width: '300px', height: '200px', objectFit: 'contain' }} /></> 
         :
          <><div className="preview" >         
-            <p  style={{ color: '#969696', marginTop: '6vh' }}>{content} </p> 
+            <p  style={{ color: '#969696', marginTop: '7vh' }}>{content} </p> 
          </div> </> }
 
         </Col>
+        <Button variant="light" className="mx-2" onClick={() => deleteComponent()}>
+                 <i className="bi bi-trash" style={{ color: '#1560BD', padding: '30px' }} />
+        </Button>
     </Row>
      </>  
   );

@@ -12,19 +12,20 @@ const Page = (props) => {
   const [components, setComponents] = useState(props.page ? props.page.components : []);
   const [numComps, setNumComps] = useState(props.page ?  props.page.components.length : 0);
   const [preview, setPreview] = useState([]);
-
+  const [isDeleted, setIsDeleted] = useState(false);
+  
   const navigate = useNavigate();
   const location = useLocation();
 
 
   useEffect(() => {
-    console.log(numComps);
-  
-    const generatePreview = () => {
-      const newPreview = [];
+  //visualizza componenti già presenti nella pagina
+    const generatePreview = () => {  const newPreview = [];
       for (let i = 0; i < numComps; i++) {
         newPreview.push(
           <Component
+            setIsDeleted={setIsDeleted}
+            setNumComps={setNumComps}
             setComponents={setComponents}
             key={i}
             index={i}
@@ -35,9 +36,9 @@ const Page = (props) => {
       }
       setPreview(newPreview);
     };
-  
+
     generatePreview();
-  }, []);
+  }, [isDeleted]);
   
 
   const handleBackRoute = () => {
@@ -47,7 +48,7 @@ const Page = (props) => {
 
   const nextpage = location.state?.nextpage || '/';
 
-  const handleNumComps = (sign) => { 
+  const handleNumComps = () => { 
 
   if(!components[numComps]){
     let newComponent = {
@@ -60,13 +61,8 @@ const Page = (props) => {
     setComponents((prev) => [...prev, newComponent])
   }
 
-  setPreview((prev) => [...prev, <Component setComponents={setComponents} key={numComps} index={numComps} pageId={props.page.id} component={components[numComps]} />]);
-  switch (sign){
-    case '+' : setNumComps(numComps+1);
-      break;
-    case '-' : setNumComps(numComps-1);
-      break;
-    }
+  setPreview((prev) => [...prev, <Component setNumComps={setNumComps} setIsDeleted={setIsDeleted} setComponents={setComponents} key={numComps} index={numComps} pageId={props.page.id} component={components[numComps]} />]);
+   setNumComps(numComps+1);
   }
   
   const handleSubmit = (event) => {
@@ -121,11 +117,9 @@ const Page = (props) => {
           <Button variant="light" className="mx-2" onClick={() => handleBackRoute()}>
             <i className="bi bi-x-lg" style={{ color: '#1560BD' ,  padding: '30px'}} />
           </Button>
-          { !numComps && ( <>
-               <Button variant="light" className="mx-2" onClick={() => handleNumComps("+")}>
-                 <i className="bi bi-plus-lg" style={{ color: '#1560BD' }} />
-              </Button>
-               </>)}
+          <Button variant="light" className="mx-2" onClick={() => handleNumComps("+")}>
+                 <i className="bi bi-plus-lg" style={{ color: '#1560BD', padding: '30px' }} />
+          </Button>
         </Form>
       </Col>
       <Col md={6}>
@@ -137,14 +131,6 @@ const Page = (props) => {
         </Col>
     </Row>
     {preview}
-    { numComps>0 && ( <>
-    <Button variant="light" className="mx-2" onClick={() => handleNumComps("+")}>
-          <i className="bi bi-plus-lg" style={{ color: '#1560BD' , padding: '30px' }} />
-     </Button>
-     <Button variant="light" className="mx-2" onClick={() => handleNumComps("-")}>
-          <i className="bi bi-dash-lg" style={{ color: '#1560BD' ,  padding: '30px'}} />
-    </Button>
-    </>)}
      </>  
   );
 };
