@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { Component } from './Component';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Form, Button, Row, Col} from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
 
@@ -11,9 +11,34 @@ const Page = (props) => {
   );
   const [components, setComponents] = useState(props.page ? props.page.components : []);
   const [numComps, setNumComps] = useState(props.page ?  props.page.components.length : 0);
+  const [preview, setPreview] = useState([]);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+
+  useEffect(() => {
+    console.log(numComps);
+  
+    const generatePreview = () => {
+      const newPreview = [];
+      for (let i = 0; i < numComps; i++) {
+        newPreview.push(
+          <Component
+            setComponents={setComponents}
+            key={i}
+            index={i}
+            pageId={props.page.id}
+            component={components[i]}
+          />
+        );
+      }
+      setPreview(newPreview);
+    };
+  
+    generatePreview();
+  }, []);
+  
 
   const handleBackRoute = () => {
     props.setOpsNavbar(true);
@@ -23,22 +48,26 @@ const Page = (props) => {
   const nextpage = location.state?.nextpage || '/';
 
   const handleNumComps = (sign) => { 
+
+  if(!components[numComps]){
+    let newComponent = {
+      pageId : props.page.id,
+      orderId: 0,
+      type: 'Header',
+      content : '',
+      imageId : null
+    };
+    setComponents((prev) => [...prev, newComponent])
+  }
+
+  setPreview((prev) => [...prev, <Component setComponents={setComponents} key={numComps} index={numComps} pageId={props.page.id} component={components[numComps]} />]);
   switch (sign){
     case '+' : setNumComps(numComps+1);
       break;
     case '-' : setNumComps(numComps-1);
       break;
-  }
-  }
-
-  const handleComponents = () => {
-    const array = [];
-    for (let i = 0; i < numComps; i++) {
-      array.push(<Component key={i} setComponents={setComponents} pageId={props.page.id} component={components[i]} />);
     }
-
-    return <>{array}</>;
-  }  
+  }
   
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -51,7 +80,7 @@ const Page = (props) => {
       publicationDate: publicationDate,
       components : components
     };
-console.log(components)
+
     if (props.page) {
       page.id = props.page.id;
       props.editPage(page);
@@ -107,7 +136,7 @@ console.log(components)
         </div>
         </Col>
     </Row>
-    {handleComponents()}
+    {preview}
     { numComps>0 && ( <>
     <Button variant="light" className="mx-2" onClick={() => handleNumComps("+")}>
           <i className="bi bi-plus-lg" style={{ color: '#1560BD' }} />

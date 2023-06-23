@@ -255,7 +255,7 @@ app.put('/api/pages/:id',
       const components  = req.body.components.map((e) => {
 
         return {  
-           pageId : result.id,
+           pageId : page.id,
            orderId : e.orderId,
            type : e.type,
            content : e.content,

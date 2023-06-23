@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import API from '../API';
 
 const Component = (props) => {
-    const navigate = useNavigate();
 
     const [orderId, setOrderId] = useState(props.component ? props.component.orderId : 0 );
     const [type, setType] = useState(props.component ? props.component.type : 'Header');
@@ -14,9 +13,9 @@ const Component = (props) => {
     const [images, setImages] = useState([]);
     const [selectedImage, setSelectedImage] = useState();
 
-
     useEffect(() => {
     API.getImages().then( (images) => {
+          
          setImages(images);
          setSelectedImage(images[0])
     })}, []);
@@ -27,31 +26,25 @@ const Component = (props) => {
       };
       
 
-  useEffect ( () => {
-
-    let component = {
-      pageId : props.pageId,
-      orderId: orderId,
-      type: type.trim(),
-      content : content,
-      imageId : imageId
-    };
-
-    if (props.component) {
+      useEffect(() => {
+        const component = {
+          orderId: orderId,
+          type: type.trim(),
+          content: content,
+          imageId: imageId,
+        };
+            
         props.setComponents((prevComponents) =>
-          prevComponents.map((Component) => {
-            if (Component.id === props.component.id) {
-                component.id = props.component.id;
-                return component;
+          prevComponents.map((prevComponent, index) => {
+            if (index === props.index) {
+              return { ...prevComponent, ...component };
             }
-            return Component;
+            return prevComponent;
           })
         );
-      } else {
-        props.setComponents((prevComponents) => [...prevComponents, component]);
-      }
+      }, [orderId, content, type, imageId, props.componentIndex]);
+      
 
-  }, [orderId, content, type, imageId]);
 
   const handleOrderIdChange = (event) => {
     setOrderId(event.target.value);
