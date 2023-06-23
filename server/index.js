@@ -158,6 +158,21 @@ app.get('/api/components/:id',
   }
 );
 
+app.get('/api/images',
+  [ check('id').isInt({min: 1}) ], 
+  async (req, res) => {
+    try {
+      const result = await pagesDao.getImages();
+      if (result.error)
+        res.status(404).json(result);
+      else
+        res.json(result);
+    } catch (err) {
+      res.status(500).end();
+    }
+  }
+);
+
 const defineStatus = (publicationDate) =>{
   if (publicationDate == NULL)
         return 'draft';

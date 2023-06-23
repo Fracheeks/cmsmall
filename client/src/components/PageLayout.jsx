@@ -20,20 +20,23 @@ function DefaultLayout(props) {
 
   function EditPageLayout(props) {
 
-    const { pageId } = useParams();
+    const { id } = useParams();
     const [page, setPage] = useState(null);
   
     useEffect(() => {
-      props.getPage(pageId).then((p) => {
+      props.getPage(id).then((p) => {
         setPage(p);
         props.setOpsNavbar(false)
       });
-    }, [pageId]);
+    }, [id]);
 
     return (
       <Row className="vh-100">
         <Col  bg="light" className="below-nav" id="left-sidebar">
-          <Page page={page} editFilm={props.editFilm} user={props.user} setOpsNavbar = {props.setOpsNavbar} />
+       {page ?  
+        <Page page={page} editPage={props.editPage} user={props.user} setOpsNavbar = {props.setOpsNavbar} />
+        : <LoadingLayout /> 
+       }
         </Col>
       </Row>
     );
@@ -41,12 +44,14 @@ function DefaultLayout(props) {
 
   function AddPageLayout(props) {
   
-    props.setOpsNavbar(false)
+      useEffect(() => {
+        props.setOpsNavbar(false);
+      }, []);
 
     return (
       <Row className="vh-100">
         <Col  bg="light" className="below-nav" id="left-sidebar">
-          <Page addFilm={props.addFilm} user={props.user} setOpsNavbar = {props.setOpsNavbar}/>
+          <Page addPage={props.addPage} user={props.user} setOpsNavbar = {props.setOpsNavbar}/>
         </Col>
       </Row>
     );
@@ -67,9 +72,12 @@ function DefaultLayout(props) {
 
     return (
       <Row className="vh-100">
+     {page ?  
         <Col  bg="light" className="below-nav" id="left-sidebar">
           <ViewForm  setOpsNavbar = {props.setOpsNavbar}  isFront = {props.isFront} page={page} user={props.user} />
         </Col>
+          : <LoadingLayout /> 
+     }
       </Row>
     );
   }

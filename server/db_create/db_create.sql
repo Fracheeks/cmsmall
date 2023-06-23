@@ -68,7 +68,7 @@ Paesi come Mickey Mouse, è un personaggio immaginario dei fumetti e dei cartoni
 INSERT INTO "components" VALUES (11, 4, 3, "Image", NULL, 4);
 
 INSERT INTO "images" VALUES (1, "Iron Man", "./images/ironman.jpg");
-INSERT INTO "images" VALUES (2, "Mountain", "./images/mountain.jpg");
+INSERT INTO "images" VALUES (2, "New York", "./images/newyork.jpg");
 INSERT INTO "images" VALUES (3, "SalTO", "./images/salto.jpg");
 INSERT INTO "images" VALUES (4, "Topolino", "./images/topolino.jpg");
 

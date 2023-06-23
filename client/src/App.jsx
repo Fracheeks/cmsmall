@@ -120,7 +120,6 @@ function App() {
     <BrowserRouter>
           <Navigation opsNavbar = {opsNavbar} setOpsNavbar = {setOpsNavbar}  isFront = {isFront} setFilter={setFilter} setFront={setFront} logout={handleLogout} user={user} 
            loggedIn={loggedIn} pagelist={pages}  setPages={setPages} filter={filter} />
-       <Container fluid className="App">
 
           <Routes>
           <Route path="/" element={loading ? <LoadingLayout /> : 
@@ -129,14 +128,13 @@ function App() {
           <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin}/> : <Navigate replace to='/' />} />
           <Route path="*" element={<NotFoundLayout />} />
           <Route path="/viewPage/:id" element={ <ViewLayout setOpsNavbar = {setOpsNavbar}  isFront = {isFront} user={user} getPage = {getPage} /> } />
-          <Route path="/editPage/:pageId" element={ <EditPageLayout setOpsNavbar = {setOpsNavbar} user={user} addPage={addPage} getPage = {getPage} /> } />
-          <Route path="/addPage" element={ <addPageLayout setOpsNavbar = {setOpsNavbar} user={user} editPage={editPage}/> } />
+          <Route path="/editPage/:id" element={ <EditPageLayout setOpsNavbar = {setOpsNavbar} user={user} editPage={editPage} getPage = {getPage} /> } />
+          <Route path="/addPage" element={ <AddPageLayout setOpsNavbar = {setOpsNavbar} user={user} addPage={addPage}/> } />
           </Routes>
 
           <Toast show={message !== ''} onClose={() => setMessage('')} delay={4000} autohide bg="danger">
             <Toast.Body>{message}</Toast.Body>
           </Toast>
-        </Container>
     </BrowserRouter>
   );
 

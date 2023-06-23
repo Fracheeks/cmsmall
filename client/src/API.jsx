@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 
 const SERVER_URL = 'http://localhost:3001/api/';
 
-
 const getPages = async (filter) => {
 
        const response  =  filter == 'published' 
@@ -45,6 +44,7 @@ const responseComponents  =  await fetch(SERVER_URL + 'components/' + pageId, { 
 
 const page  = await responsePage.json();
 const components  = await responseComponents.json();
+
 return ({
   id: page.id,
   authorId : page.authorId,
@@ -57,8 +57,24 @@ return ({
     }) 
 }
 
+const getImages = async () => {
 
-const updatePage = async (film) =>{
+  const response = await fetch(SERVER_URL + 'images', { credentials: 'include' })
+
+  if(response.ok){
+    const images = await response.json();
+
+    return(
+      images.map(image =>({
+      id : image.id,
+      name : image.name,
+      url : image.url
+    })))
+  }
+}
+
+
+const updatePage = async (page) =>{
   if (page && page.publicationDate && (page.publicationDate instanceof dayjs))
       page.publicationDate = page.publicationDate.format("YYYY-MM-DD");
   
@@ -137,5 +153,5 @@ async function getUserInfo() {
   }
 }
 
-const API = {logIn, getUserInfo, logOut, getPages, getPage, deletePage};
+const API = {logIn, getUserInfo, logOut, getPages, getPage, deletePage, getImages, updatePage, addPage};
 export default API;

@@ -44,10 +44,10 @@ exports.getComponents = (pageId) => {
     });
   };
 
-  exports.getImages = (id) => {
+  exports.getImages = () => {
     return new Promise((resolve, reject) => {
-      const sql = 'SELECT * FROM images WHERE id = ?';
-      db.get(sql, [id], (err, rows) => {
+      const sql = 'SELECT * FROM images';
+      db.all(sql, [], (err, rows) => {
         if (err) {
           reject(err);
           return;

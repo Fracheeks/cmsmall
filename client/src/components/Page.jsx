@@ -2,8 +2,7 @@ import dayjs from 'dayjs';
 import { Component } from './Component';
 import {useState} from 'react';
 import {Form, Button, Row, Col} from 'react-bootstrap';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const Page = (props) => {
   const [title, setTitle] = useState(props.page ? props.page.title : '');
@@ -11,8 +10,7 @@ const Page = (props) => {
     props.page && props.page.publicationDate ? dayjs(props.page.publicationDate).format('YYYY-MM-DD') : ''
   );
   const [components, setComponents] = useState(props.page ? props.page.components : []);
-
-  const [numComps, setNumComps] = useState(props.page ?  props.page.components.lenght : 0);
+  const [numComps, setNumComps] = useState(props.page ?  props.page.components.length : 0);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -34,22 +32,26 @@ const Page = (props) => {
   }
 
   const handleComponents = () => {
-    const components = [];
+    const array = [];
     for (let i = 0; i < numComps; i++) {
-      components.push(<Component key={i} component={components[i]} components={components} />);
+      array.push(<Component key={i} setComponents={setComponents} pageId={props.page.id} component={components[i]} />);
     }
-    return <>{components}</>;
+
+    return <>{array}</>;
   }  
   
   const handleSubmit = (event) => {
     event.preventDefault();
+    props.setOpsNavbar(true);
+
 
     const page = {
+      authorId : props.user.id,
       title: title.trim(),
       publicationDate: publicationDate,
       components : components
     };
-
+console.log(components)
     if (props.page) {
       page.id = props.page.id;
       props.editPage(page);
