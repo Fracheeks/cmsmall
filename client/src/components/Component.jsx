@@ -9,7 +9,7 @@ const Component = (props) => {
     const [orderId, setOrderId] = useState(props.component ? props.component.orderId : 0 );
     const [type, setType] = useState(props.component ? props.component.type : 'Header');
     const [content, setContent] = useState(props.component ? props.component.content : '');
-    const [imageId, setImageId] = useState(props.component ? props.component.imageId : null );
+    const [imageId, setImageId] = useState(props.component && props.component.imageId ? props.component.imageId : null);
     const [images, setImages] = useState([]);
     const [selectedImage, setSelectedImage] = useState();
 
@@ -17,12 +17,12 @@ const Component = (props) => {
     API.getImages().then( (images) => {
           
          setImages(images);
-         setSelectedImage(images[0])
+         imageId == null ? setSelectedImage(images[0]) : setSelectedImage(images[imageId-1]);
     })}, []);
 
     const handleImageChange = (event) => {
-        setSelectedImage(images.find((image) => image.name === String(event.target.value)));
-        setImageId(selectedImage.id)
+        setSelectedImage(images.find((image) => image.id == event.target.value));
+        setImageId(event.target.value)
       };
       
 
@@ -42,7 +42,7 @@ const Component = (props) => {
             return prevComponent;
           })
         );
-      }, [orderId, content, type, imageId, props.componentIndex]);
+      }, [orderId, content, type, imageId]);
       
 
 
@@ -66,12 +66,12 @@ const Component = (props) => {
     <Row>
       <Col md={6}>
         <Form >
-          <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '2vh' }} >
+          <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }} >
             <Form.Label>Order</Form.Label>
             <Form.Control type="number" required={true} value={orderId} onChange={handleOrderIdChange} />
           </Form.Group>
 
-          <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh' }}>
+          <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }}>
                     <Form.Label>Type</Form.Label>
                     <Form.Select value={type} onChange={handleTypeChange}>
                              <option value="Header">Header</option>
@@ -79,12 +79,12 @@ const Component = (props) => {
                              <option value="Image">Image</option>
                      </Form.Select>
           </Form.Group>
-          { type === 'Image' ?  <>
-          <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh' }}>
+          { type === 'Image' && selectedImage?  <>
+          <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }}>
                     <Form.Label>Please select an image:</Form.Label>
-                    <Form.Select value={selectedImage?.name} onChange={handleImageChange}>
+                    <Form.Select value={imageId} onChange={handleImageChange}>
                         {images.map((image) => (
-                                 <option key={image.id} value={image.name}>
+                                 <option key={image.id} value={image.id}>
                               {image.name}
                          </option>
                          ))}
@@ -94,7 +94,7 @@ const Component = (props) => {
           </>
          :
 
-          <Form.Group className="mb-3"style={{ color: '#1560BD', marginTop: '1vh' }}  >
+          <Form.Group className="mb-3"style={{ color: '#1560BD', marginTop: '1vh',  padding: '30px' }}  >
             <Form.Label>Content</Form.Label >
             <Form.Control type="text" value={content} onChange={handleContentChange} />
           </Form.Group>
@@ -103,10 +103,10 @@ const Component = (props) => {
       </Col>
       <Col md={6}>
         { type === 'Image'  && selectedImage?  <>
-        <img src={"/src/components/" + selectedImage.url} alt="Component Image" style={{ marginTop: '5vh', width: '300px', height: '200px', objectFit: 'contain' }} /></> 
+        <img src={"/src/components/" + selectedImage.url} alt="Component Image" style={{ marginTop: '7vh', width: '300px', height: '200px', objectFit: 'contain' }} /></> 
         :
          <><div className="preview" >         
-            <p  style={{ color: '#969696', marginTop: '5vh' }}>{content} </p> 
+            <p  style={{ color: '#969696', marginTop: '6vh' }}>{content} </p> 
          </div> </> }
 
         </Col>

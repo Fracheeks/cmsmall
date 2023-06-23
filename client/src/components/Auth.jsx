@@ -1,6 +1,7 @@
 import { React, useState} from 'react';
 import { Form, Button, Alert, Col, Row, InputGroup } from 'react-bootstrap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import API from '../API';
 
 function LoginForm(props) {
   const [username, setUsername] = useState('');
@@ -18,15 +19,33 @@ function LoginForm(props) {
     setVisible(!isVisible);
   }
 
+  const doLogIn = (credentials) => {
+    API.logIn(credentials)
+      .then( user => {
+        setErrorMessage('');
+        props.loginSuccessful(user);
+      })
+      .catch(err => {
+        setErrorMessage('Wrong username or password');
+      })
+  }
+  
   const handleSubmit = (event) => {
-    event.preventDefault();
-    const credentials = { username, password };
+      event.preventDefault();
+      setErrorMessage('');
+      const credentials = { username, password };
 
-    props.login(credentials)
-      .then( () => navigate( "/" ) )
-      .catch((err) => { 
-        setErrorMessage(err.error); setShow(true); 
-      });
+      // SOME VALIDATION, ADD MORE if needed (e.g., check if it is an email if an email is required, etc.)
+      let valid = true;
+      if(username === '' || password === '')
+          valid = false;
+      
+      if(valid)
+      {
+        doLogIn(credentials);
+      } else {
+        setErrorMessage('Error(s) in the form, please fix it/them.')
+      }
   };
 
   return (
@@ -35,13 +54,8 @@ function LoginForm(props) {
     <h2 className="pb-3" style={{ textAlign: 'center', color: '#1560BD', marginTop: '5vh'  }} >Login</h2>
 
       <Form  onSubmit={handleSubmit}>
-          <Alert
-            dismissible
-            show={show}
-            onClose={() => setShow(false)}
-            variant="danger">
-            {errorMessage}
-          </Alert>
+      {errorMessage ? <Alert variant='danger' dismissible onClick={()=>setErrorMessage('')}>{errorMessage}</Alert> : ''}
+
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Email</Form.Label>
             <Form.Control

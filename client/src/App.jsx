@@ -3,9 +3,8 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './App.css';
 
 import { React, useState, useEffect } from 'react';
-import { Container, Toast } from 'react-bootstrap/'
 import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
-
+import { LoginForm } from './components/Auth';
 import { Navigation } from './components/Navigation';
 import { NotFoundLayout, LoginLayout, LoadingLayout, DefaultLayout , ViewLayout, EditPageLayout, AddPageLayout} from './components/PageLayout';
 
@@ -25,7 +24,9 @@ function App() {
 
   const [loading, setLoading] = useState(false);
 
-  const [message, setMessage] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const [initialLoading, setInitialLoading] = useState(true);
 
   const [filter, setFilter] = useState('published');
 
@@ -34,46 +35,48 @@ function App() {
   const [opsNavbar, setOpsNavbar] = useState(true);
 
 
-  const handleErrors = (err) => {
-    let msg = '';
-    if (err.error) msg = err.error;
-    else if (String(err) === "string") msg = String(err);
-    else msg = "Unknown Error";
-    setMessage(msg);
+  function handleError(err) {
+    console.log('err: '+JSON.stringify(err));  // Only for debug
+    let errMsg = 'Unkwnown error';
+    if (err.errors) {
+      if (err.errors[0])
+        if (err.errors[0].msg)
+          errMsg = err.errors[0].msg;
+    } else if (err.error) {
+      errMsg = err.error;
+    }
+
+    setErrorMsg(errMsg);
+    setTimeout(()=>setDirty(true), 2000);  
   }
 
-  useEffect(() => {
-    const init = async () => {
+  useEffect(()=> {
+    const checkAuth = async() => {
       try {
-        setLoading(true);
         const user = await API.getUserInfo();
-        setUser(user);
         setLoggedIn(true);
-        setLoading(false);
-      } catch (err) {
-        handleErrors(err);
-        setUser(null);
-        setLoggedIn(false); setLoading(false);
+        setUser(user);
+      } catch(err) {
       }
     };
-    init();
-  }, []);  
+    checkAuth();
+  }, []);
 
-  const handleLogin = async (credentials) => {
-    try {
-      const user = await API.logIn(credentials);
-      setUser(user);
-      setLoggedIn(true);
-    } catch (err) {
-      throw err;
-    }
-  };
 
-  const handleLogout = async () => {
+  const doLogOut = async () => {
     await API.logOut();
     setLoggedIn(false);
-    setUser(null);
-  };
+    setUser(undefined);
+    /* set state to empty if appropriate */
+  }
+  
+
+  const loginSuccessful = (user) => {
+    setUser(user);
+    setLoggedIn(true);
+    setDirty(true);  // load latest version of data, if appropriate
+  }
+
 
   useEffect(() => {
     setDirty(true);
@@ -89,7 +92,7 @@ function App() {
           setDirty(false);
         })
         .catch(e => { 
-          handleErrors(e); setDirty(false); 
+          handleError(e); setDirty(false); 
         } ); 
     }
   }, [dirty]);
@@ -97,19 +100,19 @@ function App() {
   const deletePage = (pageId) => {
     API.deletePage(pageId)
       .then(() => { setDirty(true); })
-      .catch(e => handleErrors(e)); 
+      .catch(e => handleError(e)); 
   }
 
   const editPage = (page) => {
     API.updatePage(page)
       .then(() => { setDirty(true); })
-      .catch(e => handleErrors(e)); 
+      .catch(e => handleError(e)); 
   }
 
   const addPage = (page) => {
     API.addPage(page)
       .then(() => { setDirty(true); })
-      .catch(e => handleErrors(e)); 
+      .catch(e => handleError(e)); 
   }
 
   const getPage = (pageId) => {
@@ -118,23 +121,19 @@ function App() {
 
   return (
     <BrowserRouter>
-          <Navigation opsNavbar = {opsNavbar} setOpsNavbar = {setOpsNavbar}  isFront = {isFront} setFilter={setFilter} setFront={setFront} logout={handleLogout} user={user} 
+          <Navigation opsNavbar = {opsNavbar} setOpsNavbar = {setOpsNavbar}  isFront = {isFront} setFilter={setFilter} setFront={setFront} logout={doLogOut} user={user} 
            loggedIn={loggedIn} pagelist={pages}  setPages={setPages} filter={filter} />
 
           <Routes>
           <Route path="/" element={loading ? <LoadingLayout /> : 
           <DefaultLayout  user={user} isFront = {isFront} pagelist={pages} deletePage={deletePage}  />
             } />
-          <Route path="/login" element={!loggedIn ? <LoginLayout login={handleLogin}/> : <Navigate replace to='/' />} />
+        <Route path='/login' element={loggedIn? <Navigate replace to='/' />:  <LoginForm loginSuccessful={loginSuccessful} />} />
           <Route path="*" element={<NotFoundLayout />} />
           <Route path="/viewPage/:id" element={ <ViewLayout setOpsNavbar = {setOpsNavbar}  isFront = {isFront} user={user} getPage = {getPage} /> } />
           <Route path="/editPage/:id" element={ <EditPageLayout setOpsNavbar = {setOpsNavbar} user={user} editPage={editPage} getPage = {getPage} /> } />
           <Route path="/addPage" element={ <AddPageLayout setOpsNavbar = {setOpsNavbar} user={user} addPage={addPage}/> } />
           </Routes>
-
-          <Toast show={message !== ''} onClose={() => setMessage('')} delay={4000} autohide bg="danger">
-            <Toast.Body>{message}</Toast.Body>
-          </Toast>
     </BrowserRouter>
   );
 
