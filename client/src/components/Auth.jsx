@@ -54,7 +54,10 @@ function LoginForm(props) {
     <h2 className="pb-3" style={{ textAlign: 'center', color: '#1560BD', marginTop: '5vh'  }} >Login</h2>
 
       <Form  onSubmit={handleSubmit}>
-      {errorMessage ? <Alert variant='danger' dismissible onClick={()=>setErrorMessage('')}>{errorMessage}</Alert> : ''}
+      {errorMessage ? <Alert variant='light' dismissible onClick={() => setErrorMessage('')}>
+            <span className="error-icon" role="img" aria-label="Error">⚠️</span>
+            <span className="error-message">{errorMessage}</span>
+      </Alert> : ''}
 
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Email</Form.Label>
