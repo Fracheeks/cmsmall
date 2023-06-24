@@ -2,6 +2,50 @@ import dayjs from 'dayjs';
 
 const SERVER_URL = 'http://localhost:3001/api/';
 
+async function getUsers(){
+  const response = await fetch(SERVER_URL + 'users', {
+    method: 'GET',
+    credentials: 'include'})
+    
+
+const users = await response.json();
+
+if(response.ok){
+    return users;
+  }
+   else{
+  throw users;}
+}
+
+const setAppName = async (name) => {
+
+  const response = await fetch(SERVER_URL + 'application/'+ name, {
+    method: 'PUT',
+    credentials: 'include',})
+
+  const result = await response.json();
+  if(response.ok){
+    return result;
+  }
+  else{
+    throw result;
+  }
+}
+
+const getAppName = async () => {
+
+  const response = await fetch(SERVER_URL + 'application', {
+  method: 'GET'})
+
+  const result = await response.json();
+  if(response.ok){
+    return result;
+  }
+  else{
+    throw result;
+  }
+}
+
 const getPages = async (filter) => {
 
        const response  =  filter == 'published' 
@@ -152,6 +196,20 @@ const result = await response.json();
         throw result;}
 }
 
+async function setAuthor(pageId, authorId){
+  const response = await fetch(SERVER_URL + 'author/'+pageId+'/'+ authorId, {
+    method: 'POST',
+    credentials: 'include',})
+  
+    const author = await response.json();
+
+    if(response.ok){
+      return author;
+    }
+    else{
+      throw author;
+    }
+  }
 
 async function logIn(credentials) {
   let response = await fetch(SERVER_URL + 'sessions', {
@@ -190,5 +248,6 @@ async function getUserInfo() {
   }
 }
 
-const API = {logIn, getUserInfo, logOut, getPages, getPage, deletePage, getImages, updatePage, addPage};
+const API = {logIn, getUserInfo, logOut, getPages, getPage, deletePage, getImages, 
+updatePage, addPage, setAuthor, getUsers, setAppName, getAppName};
 export default API;

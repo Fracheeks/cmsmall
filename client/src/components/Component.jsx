@@ -78,7 +78,6 @@ const deleteComponent = () => {
       props.setComponents((Components) =>
         Components.map((Component) => {
           if (Component.orderId == value) {
-            console.log(Component)
             return { ...Component, orderId: props.component.orderId };
           }
           return Component;

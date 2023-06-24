@@ -120,6 +120,45 @@ const verifyComps= check('components')
     }
   })
 
+  app.get('/api/application',
+  (req, res) => {
+    pagesDao.getAppName()
+      .then(name => 
+           res.json(name))
+      .catch((err) => res.status(500).json(err));
+  }
+);
+
+
+  app.put('/api/application/:name',
+  isLoggedIn,
+  (req, res) => {
+
+    if(req.user.role  != 'Admin' ){
+      return res.status(400).json({error : "Unauthorized"});
+    }
+
+    pagesDao.setAppName(req.params.name)
+      .then(() => 
+           res.json({name: req.params.name}))
+      .catch((err) => res.status(500).json(err));
+  }
+);
+
+
+  app.get('/api/users',
+  isLoggedIn,
+  (req, res) => {
+    pagesDao.getUsers()
+      .then(users => {
+        if (!req.isAuthenticated() && req.user.role != 'Admin'){
+          res.status(404).json({error : 'Not authorized'})
+        }else{
+           res.json(users);}})
+      .catch((err) => res.status(500).json(err));
+  }
+);
+
   app.get('/api/pages/:filter',
   (req, res) => {
     pagesDao.getPages(req.params.filter, req.user?.id)
@@ -183,7 +222,11 @@ app.get('/api/images',
 const defineStatus = (publicationDate) =>{
   if (publicationDate == null)
         return 'draft';
-  return publicationDate<dayjs().format('YYYY-MM-DD') ? 'published' : 'scheduled';
+  return publicationDate<=dayjs().format('YYYY-MM-DD') ? 'published' : 'scheduled';
+}
+
+checkPublicationDate = (publicationDate, creationDate) =>{
+  return publicationDate<creationDate ? 0 : 1;
 }
 
 app.post('/api/pages', 
@@ -196,6 +239,10 @@ app.post('/api/pages',
     const errors = validationResult(req).formatWith(errorFormatter); // format error message
     if (!errors.isEmpty()) {
       return res.status(422).json({ error: errors.array().join(", ") }); // error message is a single string with all error joined together
+    }
+
+    if(!checkPublicationDate(req.body.publicationDate, req.body.creationDate)) {
+      return res.status(400).json({ error: "Invalid publication date"})
     }
     try {
     const page = {
@@ -246,6 +293,9 @@ app.put('/api/pages/:id',
     if(req.user.id != req.body.authorId && req.user.role  !== 'Admin' ){
       return res.status(400).json("Unauthorized");
     }
+
+    if(!checkPublicationDate(req.body.publicationDate, req.body.creationDate)) {
+      return res.status(400).json({ error: "Invalid publication date"})}
 
     try {
 
@@ -315,6 +365,35 @@ app.delete('/api/pages/:id',
     }
   }
 );
+
+
+app.post('/api/author/:pageId/:authorId',
+isLoggedIn,
+[ check('pageId').isInt(),
+  check('authorId').isInt()
+ ],
+  async (req, res) => {
+
+    if(req.user.role  != 'Admin' ){
+      return res.status(400).json({error : "Unauthorized"});
+    }
+
+    if(pagesDao.getUsers.every(user => user.id != req.params.authorId)){
+      return res.status(400).json({error : "user not found"});
+    }
+
+    try {
+      const result = await pagesDao.setAuthor(req.params.pageId, req.params.authorId)
+      if (result.error)
+        res.status(404).json(result.error);
+      else
+        res.json(result); 
+    } catch (err) {
+      res.status(503).json({ error: `Database error during the update of author foe the page n. ${req.params.id}: ${err}` });
+    }
+  }
+);
+
 
 
 

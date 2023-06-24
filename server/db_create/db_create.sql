@@ -33,7 +33,11 @@ CREATE TABLE IF NOT EXISTS "images" (
  "url"     TEXT
 );  
 
---password = 'pwd' for all
+CREATE TABLE IF NOT EXISTS "application" (
+ "name"  TEXT PRIMARY KEY);
+
+INSERT INTO "application" VALUES ("CMSmall");
+
 INSERT INTO "users" VALUES (1, "Regular", 'francesca@test.com','Francesca', '893dh2ko9x4w86fh', '30a597f0fc8eb4ac6425af823b0e55d5d274f8fe9115456f5b5fd78d3bd17c60'); 
 INSERT INTO "users" VALUES (2,'Admin', 'admin@test.com','Admin', '833dh2ko6x4w86fn', '8e7f710b064b3093f77d870cfe47f8ad7c2c4433ac8d2af29ea1ff8b28c80dc9');
 INSERT INTO "users" VALUES (3,'Regular', 'matteo@test.com','Matteo', '133dh22o6xkw86fx', '61bd81f227c7f1c082b21e6878fc0888f1463cd7c57ffba7a333f2759d146926');

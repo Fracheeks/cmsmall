@@ -3,8 +3,10 @@ import { Component } from './Component';
 import {useState, useEffect} from 'react';
 import {Form, Button, Row, Col} from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
+import API from '../API';
 
 const Page = (props) => {
+  const [authorId, setAuthorId] = useState(props.user?.id);
   const [title, setTitle] = useState(props.page ? props.page.title : '');
   const [publicationDate, setPublicationDate] = useState(
     props.page && props.page.publicationDate ? dayjs(props.page.publicationDate).format('YYYY-MM-DD') : ''
@@ -21,8 +23,6 @@ const Page = (props) => {
   //visualizza componenti già presenti nella pagina
     const generatePreview = () => { 
 
-       console.log(components
-      )
 
       const newPreview = components.map((component, index) => (
         <Component
@@ -59,7 +59,6 @@ const Page = (props) => {
     };
     setComponents((prev) => [...prev, newComponent])
   }
-  console.log(components)
   
    setNumComps(numComps+1);
    setIsModified((isModified) => !isModified);
@@ -72,7 +71,7 @@ const Page = (props) => {
 
 
     const page = {
-      authorId : props.user.id,
+      authorId : authorId,
       title: title.trim(),
       publicationDate: publicationDate,
       components : components
@@ -88,6 +87,14 @@ const Page = (props) => {
     navigate('/');
   };
 
+  const handleAuthorChange = (event) => {
+    API.setAuthor(props.page.id, event.target.value).then((authorId)=>
+     setAuthorId(authorId)
+    )
+    .catch(err => props.handleError(err))
+  };
+
+
   const handleTitleChange = (event) => {
     setTitle(event.target.value);
   };
@@ -101,6 +108,16 @@ const Page = (props) => {
     <Row>
       <Col md={6}>
         <Form onSubmit={handleSubmit}  >
+          { props.user.role == 'Admin' && (<>
+            <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }} >
+            <Form.Label>Author</Form.Label>
+            <Form.Select value={authorId} onChange={handleAuthorChange}>
+                        {props.authors.map((author) => (
+                                 <option key={author.id} value={author.id}>
+                              {author.name}
+                         </option>))}
+             </Form.Select></Form.Group>
+          </>)}
           <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }} >
             <Form.Label>Title</Form.Label>
             <Form.Control type="text" required={true} value={title} onChange={handleTitleChange} />

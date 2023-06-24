@@ -10,6 +10,16 @@ const Navigation = (props) => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [route, setRoute] = useState('Front-office');  
+  const [AppName, setAppName] = useState('')
+  const [editMode, setEditMode] = useState(false)
+
+
+  useEffect(() =>
+     {API.getAppName().then((res) => 
+        setAppName(res.name))
+        .catch((error) => 
+           props.handleError(error));}, [] )
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -40,14 +50,46 @@ const Navigation = (props) => {
 
   const handleReset = () => {
     setSearchQuery('');
-    API.getPages(props.filter).then((pages) => { props.setPages(pages); });
+    API.getPages(props.filter).then((pages) => 
+    { props.setPages(pages); })
+    .catch((error) => props.handleError(error));
+
+    ;
   };
+
+  const handleSubmitName = (event) => {
+
+    event.preventDefault();
+
+    {API.setAppName(AppName).then((res) => 
+       setEditMode(false)
+       )
+       .catch((error) => 
+          props.handleError(error));}
+
+  }
   
 
   return (
     <Navbar  style={{ backgroundColor: '#6397D0' }} expand="sm" variant="dark" className="navbar-padding">
-        <Navbar.Brand className="mx-5" style={{ fontSize: '30px' }}>
-        <i className ="bi bi-journals mx-2"/>CMSmall
+        <Navbar.Brand className="mx-5 d-inline-flex align-items-center" style={{ fontSize: '30px' }}>
+        <i className ="bi bi-journals mx-2"/>
+
+        {props.user?.role == 'Admin' && editMode ? ( <>
+                      <Form onSubmit={handleSubmitName}  >
+                      <Form.Control type="text" required={true} value={AppName} onChange={(event) => setAppName(event.target.value)} />
+                      </Form>
+                      </>
+             ) : (
+             <>{AppName}</>
+         )}
+
+        {props.user?.role == 'Admin' && !editMode &&
+            <Button variant="light" style={{ border:'none', backgroundColor: '#6397D0', color: '#FFFFFF' }} onClick={()=>setEditMode(true)} >
+                  <i className="bi bi-pencil"/>
+             </Button>
+        }
+
         </Navbar.Brand>
     { props.opsNavbar && ( <>
       <Form className="my-2 my-lg-0 mx-auto d-sm-block" action="#" role="search" aria-label="Quick search" onSubmit={handleSubmit}>

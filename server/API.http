@@ -4,8 +4,9 @@ content-type: application/json
 
 {
     "username": "francesca@test.com",
-    "password": "pwd"
+    "password": "esame"
 }
+
 ###
 
 POST http://localhost:3001/api/sessions HTTP/1.1
@@ -13,7 +14,7 @@ content-type: application/json
 
 {
     "username": "admin@test.com",
-    "password": "pwd"
+    "password": "esame"
 }
 
 ###
@@ -34,7 +35,7 @@ GET http://localhost:3001/api/pages/all HTTP/1.1
 ###
 
 ## Gets only the pages that have been published
-GET http://localhost:3001/api/pages/draft HTTP/1.1
+GET http://localhost:3001/api/pages/published HTTP/1.1
 
 ###
 
@@ -103,3 +104,14 @@ content-type: application/json
 DELETE http://localhost:3001/api/pages/3 HTTP/1.1
 
 ###
+
+## get Users
+GET http://localhost:3001/api/users HTTP/1.1
+###
+
+## get Users
+GET http://localhost:3001/api/application HTTP/1.1
+###
+
+## get Users
+PUT http://localhost:3001/api/application/namee HTTP/1.1

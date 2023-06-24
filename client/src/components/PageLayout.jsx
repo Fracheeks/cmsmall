@@ -5,6 +5,7 @@ import PageForm from './PageForm';
 import {LoginForm} from  './Auth';
 import {ViewForm} from './ViewForm';
 import Page from './Page';
+import API from '../API';
 
 function DefaultLayout(props) {
 
@@ -22,19 +23,30 @@ function DefaultLayout(props) {
 
     const { id } = useParams();
     const [page, setPage] = useState(null);
-  
+    const [authors, setAuthors] = useState([]);
+
+
     useEffect(() => {
       props.getPage(id).then((p) => {
         setPage(p);
         props.setOpsNavbar(false)
       });
+
+      API.getUsers().then((users) => {
+        console.log(users)
+        setAuthors(users.map((user) => ({ id : user.id, name : user.name})))})
+        .catch((err)=>props.handleError(err))
+
     }, [id]);
+
+
+
 
     return (
       <Row className="vh-100">
         <Col  bg="light" className="below-nav" id="left-sidebar">
        {page ?  
-        <Page page={page} editPage={props.editPage} user={props.user} setOpsNavbar = {props.setOpsNavbar} />
+        <Page page={page} handleError={props.handleError} authors={authors} editPage={props.editPage} user={props.user} setOpsNavbar = {props.setOpsNavbar} />
         : <LoadingLayout /> 
        }
         </Col>
@@ -43,15 +55,23 @@ function DefaultLayout(props) {
   }
 
   function AddPageLayout(props) {
+
+    const [authors, setAuthors] = useState([]);
   
       useEffect(() => {
         props.setOpsNavbar(false);
-      }, []);
+
+
+      API.getUsers().then((users) => {
+        setAuthors(users.map((user) => ({ id : user.id, name : user.name})))})
+        .catch((err)=>props.handleError(err))
+
+      }, [props.pages]);
 
     return (
       <Row className="vh-100">
         <Col  bg="light" className="below-nav" id="left-sidebar">
-          <Page addPage={props.addPage} user={props.user} setOpsNavbar = {props.setOpsNavbar}/>
+          <Page handleError={props.handleError} authors={authors} addPage={props.addPage} user={props.user} setOpsNavbar = {props.setOpsNavbar}/>
         </Col>
       </Row>
     );

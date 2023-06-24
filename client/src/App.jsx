@@ -119,7 +119,8 @@ function App() {
 
   return (
     <BrowserRouter>
-          <Navigation opsNavbar = {opsNavbar} setOpsNavbar = {setOpsNavbar}  isFront = {isFront} setFilter={setFilter} setFront={setFront} logout={doLogOut} user={user} 
+          <Navigation handleError={handleError} user={user} opsNavbar = {opsNavbar} setOpsNavbar = {setOpsNavbar}  
+           isFront = {isFront} setFilter={setFilter} setFront={setFront} logout={doLogOut} 
            loggedIn={loggedIn} pagelist={pages}  setPages={setPages} filter={filter} />
 
           <Routes>
@@ -129,8 +130,8 @@ function App() {
         <Route path='/login' element={loggedIn? <Navigate replace to='/' />:  <LoginForm loginSuccessful={loginSuccessful} />} />
           <Route path="*" element={<NotFoundLayout />} />
           <Route path="/viewPage/:id" element={ <ViewLayout setOpsNavbar = {setOpsNavbar}  isFront = {isFront} user={user} getPage = {getPage} /> } />
-          <Route path="/editPage/:id" element={ <EditPageLayout setOpsNavbar = {setOpsNavbar} user={user} editPage={editPage} getPage = {getPage} /> } />
-          <Route path="/addPage" element={ <AddPageLayout setOpsNavbar = {setOpsNavbar} user={user} addPage={addPage}/> } />
+          <Route path="/editPage/:id" element={ <EditPageLayout handleError={handleError} setOpsNavbar = {setOpsNavbar} user={user} editPage={editPage} getPage = {getPage} /> } />
+          <Route path="/addPage" element={ <AddPageLayout handleError={handleError} setOpsNavbar = {setOpsNavbar} user={user} addPage={addPage}/> } />
           </Routes>
     </BrowserRouter>
   );

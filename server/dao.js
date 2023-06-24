@@ -167,7 +167,7 @@ exports.updatePage = (page) => {
     }
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE pages SET authorId=?, title=?, creationDate=?, publicationDate=?, status=? WHERE id=?';
-        db.run(sql, [page.authorId, page.title, page.creationDate, page.publicationDate, page.pageId, page.status], function (err) {
+        db.run(sql, [page.authorId, page.title, page.creationDate, page.publicationDate, page.status, page.pageId], function (err) {
             if (err) {
                 reject(err);
             }
@@ -175,3 +175,52 @@ exports.updatePage = (page) => {
         });
     });
 };
+
+exports.setAuthor = (pageId,authorId) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'UPDATE pages SET authorId=? WHERE id=?';
+    db.run(sql, [authorId, pageId], function (err) {
+        if (err) {
+            reject(err);
+        }
+        resolve(authorId);
+    });
+});
+};
+
+exports.getUsers = () => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT * FROM users';
+    db.all(sql, [], function (err, rows) {
+        if (err) {
+            reject(err);
+        }
+        resolve(rows);
+    });
+});
+};
+
+exports.getAppName = () => {
+  return new Promise((resolve, reject) => {
+    const sql = 'SELECT name FROM application';
+    db.get(sql, [], function (err, row) {
+        if (err) {
+            reject(err);
+        }
+        resolve(row);
+    });
+});
+};
+
+exports.setAppName = (name) => {
+  return new Promise((resolve, reject) => {
+    const sql = 'UPDATE application SET name=? ';
+    db.run(sql, [name], function (err, row) {
+        if (err) {
+            reject(err);
+        }
+        resolve();
+    });
+});
+};
+
