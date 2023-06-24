@@ -76,8 +76,8 @@
 
 ## Users Credentials
 
-- username : Francesca , password : pwd, email : francesca@test.com
-- username : Admin , password : pwd, email : admin@test.com
-- username : Matteo , password : pwd, email : matteo@test.com
-- username : Davide, password : pwd, email : davide@test.com
+- username : Francesca , password : esame, email : francesca@test.com
+- username : Admin , password : esame, email : admin@test.com
+- username : Matteo , password : esame, email : matteo@test.com
+- username : Davide, password : esame, email : davide@test.com
 

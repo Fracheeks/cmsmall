@@ -22,11 +22,9 @@ function App() {
 
   const [user, setUser] = useState(null);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [errorMsg, setErrorMsg] = useState('');
-
-  const [initialLoading, setInitialLoading] = useState(true);
 
   const [filter, setFilter] = useState('published');
 
@@ -36,7 +34,7 @@ function App() {
 
 
   function handleError(err) {
-    console.log('err: '+JSON.stringify(err));  // Only for debug
+    console.log('err: '+JSON.stringify(err)); 
     let errMsg = 'Unkwnown error';
     if (err.errors) {
       if (err.errors[0])
@@ -45,7 +43,6 @@ function App() {
     } else if (err.error) {
       errMsg = err.error;
     }
-
     setErrorMsg(errMsg);
     setTimeout(()=>setDirty(true), 2000);  
   }
@@ -90,6 +87,7 @@ function App() {
 
           setPages(pages);
           setDirty(false);
+          setLoading(false);
         })
         .catch(e => { 
           handleError(e); setDirty(false); 
@@ -106,13 +104,13 @@ function App() {
   const editPage = (page) => {
     API.updatePage(page)
       .then(() => { setDirty(true); })
-      .catch(e => handleError(e)); 
+      .catch(e => handleError(e))
   }
 
   const addPage = (page) => {
     API.addPage(page)
       .then(() => { setDirty(true); })
-      .catch(e => handleError(e)); 
+      .catch(e => handleError(e))
   }
 
   const getPage = (pageId) => {
@@ -126,7 +124,7 @@ function App() {
 
           <Routes>
           <Route path="/" element={loading ? <LoadingLayout /> : 
-          <DefaultLayout  user={user} isFront = {isFront} pagelist={pages} deletePage={deletePage}  />
+          <DefaultLayout  setErrorMsg={setErrorMsg} errorMsg={errorMsg} user={user} isFront = {isFront} pagelist={pages} deletePage={deletePage} loading={loading} />
             } />
         <Route path='/login' element={loggedIn? <Navigate replace to='/' />:  <LoginForm loginSuccessful={loginSuccessful} />} />
           <Route path="*" element={<NotFoundLayout />} />

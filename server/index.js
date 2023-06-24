@@ -120,10 +120,14 @@ const verifyComps= check('components')
     }
   })
 
-app.get('/api/pages/:filter',
+  app.get('/api/pages/:filter',
   (req, res) => {
     pagesDao.getPages(req.params.filter, req.user?.id)
-      .then(pages => res.json(pages))
+      .then(pages =>{
+        if (!req.isAuthenticated() && pages.some((page)=>page.status != 'published')){
+          res.status(404).json({error : 'Not authorized'})
+        }else{
+           res.json(pages);}})
       .catch((err) => res.status(500).json(err)); 
   }
 );
@@ -136,7 +140,10 @@ app.get('/api/page/:id',
       if (result.error)
         res.status(404).json(result);
       else
-        res.json(result);
+        if(!req.isAuthenticated() && result.status != 'published'){
+          res.status(404).json({error : 'Not authorized'});
+        }else{
+           res.json(result);}
     } catch (err) {
       res.status(500).end();
     }
@@ -174,9 +181,9 @@ app.get('/api/images',
 );
 
 const defineStatus = (publicationDate) =>{
-  if (publicationDate == NULL)
+  if (publicationDate == null)
         return 'draft';
-  return publicationDate.isBefore(dayjs().format('YYYY-MM-DD')) ? 'published' : 'scheduled';
+  return publicationDate<dayjs().format('YYYY-MM-DD') ? 'published' : 'scheduled';
 }
 
 app.post('/api/pages', 
@@ -196,7 +203,7 @@ app.post('/api/pages',
       title : req.body.title,
       publicationDate: req.body?.publicationDate,
       creationDate : dayjs().format('YYYY-MM-DD'),
-      status : defineStatus(publicationDate)
+      status : defineStatus(req.body?.publicationDate)
     };
     const resultPage = await pagesDao.createPage(page); 
 
@@ -236,6 +243,9 @@ app.put('/api/pages/:id',
     if (req.body.id !== Number(req.params.id)) {
       return res.status(422).json({ error: 'URL and body id mismatch' });
     }
+    if(req.user.id != req.body.authorId && req.user.role  !== 'Admin' ){
+      return res.status(400).json("Unauthorized");
+    }
 
     try {
 
@@ -244,7 +254,7 @@ app.put('/api/pages/:id',
         authorId: req.user.id,
         creationDate: req.body?.creationDate,
         publicationDate: req.body?.publicationDate,
-        status : req.body.status
+        status : defineStatus(req.body?.publicationDate)
 
       };
 

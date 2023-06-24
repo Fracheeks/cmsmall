@@ -15,7 +15,6 @@ const Page = (props) => {
   const [isModified, setIsModified] = useState(false);
   
   const navigate = useNavigate();
-  const location = useLocation();
 
 
   useEffect(() => {
@@ -34,7 +33,6 @@ const Page = (props) => {
           preview={preview}
           key={index}
           index={index}
-          pageId={props.page.id}
           component={component}
         />
       ));
@@ -47,27 +45,25 @@ const Page = (props) => {
 
   const handleBackRoute = () => {
     props.setOpsNavbar(true);
-    navigate(nextpage);
+    navigate('/');
   };
-
-  const nextpage = location.state?.nextpage || '/';
 
   const handleNumComps = () => { 
 
   if(!components[numComps]){
     let newComponent = {
-      pageId : props.page.id,
-      orderId: 0,
+      orderId: numComps+1,
       type: 'Header',
       content : '',
       imageId : null
     };
     setComponents((prev) => [...prev, newComponent])
   }
-  setIsModified((isModified) => !isModified);
-
-  setPreview((prev) => [...prev, <Component setNumComps={setNumComps} max={components.length} numComps={numComps} setIsModified={setIsModified} setComponents={setComponents} key={numComps} index={numComps} pageId={props.page.id} component={components[numComps]} />]);
+  console.log(components)
+  
    setNumComps(numComps+1);
+   setIsModified((isModified) => !isModified);
+
   }
   
   const handleSubmit = (event) => {

@@ -13,7 +13,8 @@ function MyCard(props) {
           <Card.Subtitle className="mb-2 text-muted">{props.page.author}</Card.Subtitle>
           <Card.Text>
             <strong style={{ color: '#1560BD' }}>Creation Date:</strong> {props.page.creationDate}<br />
-            <strong style={{ color: '#1560BD' }}>Publication Date:</strong> {props.page.publicationDate}<br />
+            {props.page.publicationDate ?  <><strong style={{ color: '#1560BD' }}>Publication Date:</strong> {props.page.publicationDate}<br /></>
+             : <br />}
             <strong></strong> <span style={{ color: '#969696' }}>{props.page.status}</span>
           </Card.Text>
 
@@ -48,12 +49,12 @@ function PageForm(props) {
   return (
     <div>
       <Container fluid>
-        {props.errorMsg ? (
-          <Alert variant="danger" dismissible className="my-2" onClose={props.resetErrorMsg}>
-            {props.errorMsg}
-          </Alert>
-        ) : null}
-        {props.initialLoading ? (
+      {props.errorMsg ? <Alert variant='light' dismissible onClose={() => props.setErrorMsg('')} 
+      style={{margin: '1vh', backgroundColor: '#CD5C5C', color : '#FFFFFF' }}>
+      <span className="error-icon" role="img" aria-label="Error">⚠️</span>
+      <span className="error-message">{props.errorMsg}</span>
+      </Alert> : ''}
+        {props.loading ? (
           <Loading />
         ) : (
           <>

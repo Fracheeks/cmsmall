@@ -1,16 +1,14 @@
 import { React, useState} from 'react';
 import { Form, Button, Alert, Col, Row, InputGroup } from 'react-bootstrap';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import API from '../API';
 
 function LoginForm(props) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const [show, setShow] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [isVisible, setVisible] = useState('password');
@@ -54,7 +52,8 @@ function LoginForm(props) {
     <h2 className="pb-3" style={{ textAlign: 'center', color: '#1560BD', marginTop: '5vh'  }} >Login</h2>
 
       <Form  onSubmit={handleSubmit}>
-      {errorMessage ? <Alert variant='light' dismissible onClick={() => setErrorMessage('')}>
+      {errorMessage ? <Alert variant='light' dismissible onClick={() => setErrorMessage('')}
+      style={{margin: '1vh', backgroundColor: '#CD5C5C', color : '#FFFFFF' }}>
             <span className="error-icon" role="img" aria-label="Error">⚠️</span>
             <span className="error-message">{errorMessage}</span>
       </Alert> : ''}

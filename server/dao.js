@@ -98,8 +98,8 @@ exports.getComponents = (pageId) => {
               page.publicationDate = null;
           }
           return new Promise((resolve, reject) => {
-              const sql = 'INSERT INTO pages (authorId, title, creationDate, publicationDate) VALUES(?, ?, ?, ?)';
-              db.run(sql, [page.authorId, page.title, page.creationDate, page.publicationDate], function (err) {
+              const sql = 'INSERT INTO pages (authorId, title, creationDate, publicationDate, status ) VALUES(?, ?, ?, ?, ?)';
+              db.run(sql, [page.authorId, page.title, page.creationDate, page?.publicationDate, page.status], function (err) {
                   if (err) {
                       reject(err);
                   }
@@ -166,8 +166,8 @@ exports.updatePage = (page) => {
         page.publicationDate = null;
     }
     return new Promise((resolve, reject) => {
-        const sql = 'UPDATE pages SET authorId=?, title=?, creationDate=?, publicationDate=? WHERE id=?';
-        db.run(sql, [page.authorId, page.title, page.creationDate, page.publicationDate, page.pageId], function (err) {
+        const sql = 'UPDATE pages SET authorId=?, title=?, creationDate=?, publicationDate=?, status=? WHERE id=?';
+        db.run(sql, [page.authorId, page.title, page.creationDate, page.publicationDate, page.pageId, page.status], function (err) {
             if (err) {
                 reject(err);
             }

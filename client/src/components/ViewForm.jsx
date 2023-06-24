@@ -36,8 +36,7 @@ function ViewForm(props) {
           <strong>Created by:</strong> {props.page.author}
           <br />
           <strong>Creation Date:</strong> {props.page.creationDate}
-          <br />
-          <strong>Publication Date:</strong> {props.page.publicationDate}
+           {props.page.publicationDate && ( <><br /> <strong>Publication Date:</strong> {props.page.publicationDate} </>)}
         </p>
       </header>
 

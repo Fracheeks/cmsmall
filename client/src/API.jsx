@@ -8,8 +8,9 @@ const getPages = async (filter) => {
           ? await fetch(SERVER_URL + 'pages/published')
           : await fetch(SERVER_URL + 'pages/' + filter, { credentials: 'include' })
 
+    const pages  = await response.json();
+
     if(response.ok){
-      const pages  = await response.json();
 
       const sortedPages = pages.sort((a, b) => {
       const dateA = dayjs(a.publicationDate);
@@ -32,9 +33,12 @@ const getPages = async (filter) => {
         author : page.authorName,
         title :  page.title, 
         creationDate : dayjs(page?.creationDate).format("YYYY-MM-DD"), 
-        publicationDate : dayjs(page?.publicationDate).format("YYYY-MM-DD"),
+        publicationDate : page.publicationDate ? dayjs(page?.publicationDate).format("YYYY-MM-DD") : null,
         status : page.status
      } ))
+  }
+  else {
+    throw pages
   }
 }
 
@@ -43,26 +47,35 @@ const responsePage = await fetch(SERVER_URL + 'page/' + pageId, { credentials: '
 const responseComponents  =  await fetch(SERVER_URL + 'components/' + pageId, { credentials: 'include' })
 
 const page  = await responsePage.json();
+
+if(responsePage.ok){
+
 const components  = await responseComponents.json();
 
-return ({
-  id: page.id,
-  authorId : page.authorId,
-  author : page.authorName,
-  title :  page.title, 
-  creationDate : dayjs(page?.creationDate).format("YYYY-MM-DD"), 
-  publicationDate : dayjs(page?.publicationDate).format("YYYY-MM-DD"),
-  status : page.status,
-  components : components.sort((a, b) => a.orderId - b.orderId)
-}) 
+if(responseComponents.ok){
+
+              return ({
+                      id: page.id,
+                      authorId : page.authorId,
+                      author : page.authorName,
+                      title :  page.title, 
+                      creationDate : dayjs(page?.creationDate).format("YYYY-MM-DD"), 
+                      publicationDate : page.publicationDate ? dayjs(page?.publicationDate).format("YYYY-MM-DD") : null,
+                      status : page.status,
+                      components : components.sort((a, b) => a.orderId - b.orderId)})
+        }else {
+          throw components}
+
+}else{
+  throw page} 
 }
 
 const getImages = async () => {
 
   const response = await fetch(SERVER_URL + 'images', { credentials: 'include' })
+  const images = await response.json();
 
   if(response.ok){
-    const images = await response.json();
 
     return(
       images.map(image =>({
@@ -71,11 +84,14 @@ const getImages = async () => {
       url : image.url
     })))
   }
+  else{
+    throw images
+  }
 }
 
 
 const updatePage = async (page) =>{
-  if (page && page.publicationDate && (page.publicationDate instanceof dayjs))
+  if (page && page?.publicationDate && (page?.publicationDate instanceof dayjs))
       page.publicationDate = page.publicationDate.format("YYYY-MM-DD");
   
       const response =  await fetch(SERVER_URL + "pages/" + page.id, {
@@ -87,22 +103,37 @@ const updatePage = async (page) =>{
         body: JSON.stringify(page)
       })
 
-  return response.json();
+  const resultPage = await response.json();
+
+  if(response.ok){
+    return resultPage;
+  }
+  else{
+    throw resultPage;
+  }
 }
 
 const addPage = async (page) => {
 
 const response = await
-fetch(SERVER_URL + "pages/", {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  credentials: 'include',
-  body: JSON.stringify(page) 
-})
-  return response.json();
-}
+          fetch(SERVER_URL + "pages/", {
+          method: 'POST',
+          headers: {
+          'Content-Type': 'application/json',},
+          credentials: 'include',
+          body: JSON.stringify(page) 
+          })
+
+          const resultPage = await response.json();
+
+          if(response.ok){
+            return resultPage;
+          }
+          else{
+            throw resultPage;
+          }
+        }
+
 
 const deletePage = async (pageId) => {
 
@@ -111,9 +142,15 @@ fetch(SERVER_URL + "pages/" + pageId, {
   method: 'DELETE',
   credentials: 'include'
 })
-  return response.json();
-}
 
+const result = await response.json();
+
+      if(response.ok){
+          return result;
+        }
+         else{
+        throw result;}
+}
 
 
 async function logIn(credentials) {

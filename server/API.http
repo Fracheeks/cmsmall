@@ -3,7 +3,7 @@ POST http://localhost:3001/api/sessions HTTP/1.1
 content-type: application/json
 
 {
-    "username": "davide@test.com",
+    "username": "francesca@test.com",
     "password": "pwd"
 }
 ###
@@ -74,11 +74,11 @@ content-type: application/json
 ###
 
 ##Updates an existing page
-PUT http://localhost:3001/api/pages/1 HTTP/1.1
+PUT http://localhost:3001/api/pages/3 HTTP/1.1
 content-type: application/json
 
 {
-    "id": 1,
+    "id": 3,
     "title": "Terza",
     "publicationDate": "2022-06-30",
     "components": [
@@ -100,6 +100,6 @@ content-type: application/json
 ###
 
 ## Deletes a page
-DELETE http://localhost:3001/api/pages/2 HTTP/1.1
+DELETE http://localhost:3001/api/pages/3 HTTP/1.1
 
 ###

@@ -11,7 +11,7 @@ function DefaultLayout(props) {
     return (
       <Row className="vh-100">
         <Col  bg="light" className="below-nav" id="left-sidebar">
-          <PageForm pagelist={props.pagelist} isFront={props.isFront} deletePage={props.deletePage} user={props.user} />
+          <PageForm  setErrorMsg={props.setErrorMsg} errorMsg={props.errorMsg} loading={props.loading} pagelist={props.pagelist} isFront={props.isFront} deletePage={props.deletePage} user={props.user} />
         </Col>
       </Row>
     );
@@ -103,7 +103,7 @@ function LoadingLayout(props) {
       <Col md={4} bg="light" className="below-nav" id="left-sidebar">
       </Col>
       <Col md={8} className="below-nav">
-        <h1>is loading ...</h1>
+        <h1 style={{ color: '#1560BD', margin: '10vh'}}>is loading ...</h1>
       </Col>
     </Row>
   )
