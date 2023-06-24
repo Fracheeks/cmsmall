@@ -66,7 +66,6 @@ const Navigation = (props) => {
        )
        .catch((error) => 
           props.handleError(error));}
-
   }
   
 
@@ -75,15 +74,18 @@ const Navigation = (props) => {
         <Navbar.Brand className="mx-5 d-inline-flex align-items-center" style={{ fontSize: '30px' }}>
         <i className ="bi bi-journals mx-2"/>
 
-        {props.user?.role == 'Admin' && editMode ? ( <>
-                      <Form onSubmit={handleSubmitName}  >
-                      <Form.Control type="text" required={true} value={AppName} onChange={(event) => setAppName(event.target.value)} />
-                      </Form>
-                      </>
-             ) : (
-             <>{AppName}</>
-         )}
-
+        {props.user?.role === 'Admin' && editMode ? (
+                 <Form onSubmit={handleSubmitName}>
+                     <Form.Group controlId="appNameInputGroup" className="position-relative">
+                 <Form.Control type="text" required value={AppName} onChange={(event) => setAppName(event.target.value)} />
+                   <Button variant="light" className="position-absolute top-0 end-0 mt-1 me-1 btn-sm" onClick={() => setEditMode(false)}>
+                         <i className="bi bi-x" />
+                   </Button>
+                </Form.Group>
+                </Form>
+                  ) : (
+                   <>{AppName}</>
+            )}
         {props.user?.role == 'Admin' && !editMode &&
             <Button variant="light" style={{ border:'none', backgroundColor: '#6397D0', color: '#FFFFFF' }} onClick={()=>setEditMode(true)} >
                   <i className="bi bi-pencil"/>

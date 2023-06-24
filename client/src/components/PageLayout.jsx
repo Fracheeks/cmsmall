@@ -1,5 +1,5 @@
 import { React, useState, useEffect } from 'react';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col, Button, Spinner, Container} from 'react-bootstrap';
 import { Link,useParams , useNavigate} from 'react-router-dom';
 import PageForm from './PageForm';
 import {LoginForm} from  './Auth';
@@ -119,15 +119,9 @@ function NotFoundLayout() {
 
 function LoadingLayout(props) {
   return (
-    <Row className="vh-100">
-      <Col md={4} bg="light" className="below-nav" id="left-sidebar">
-      </Col>
-      <Col md={8} className="below-nav">
-        <h1 style={{ color: '#1560BD', margin: '10vh'}}>is loading ...</h1>
-      </Col>
-    </Row>
-  )
-}
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <Spinner style={{ color: '#1560BD', padding: '20px' }}
+         className='m-2' animation="border" role="status" /></div> )}
 
 function LoginLayout(props) {
   return (
