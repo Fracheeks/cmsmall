@@ -6,12 +6,22 @@ import API from '../API';
 
 const Component = (props) => {
 
-    const [orderId, setOrderId] = useState(props.component ? props.component.orderId : 0 );
+    const [orderId, setOrderId] = useState(props.component ? props.component.orderId : props.index+1 );
     const [type, setType] = useState(props.component ? props.component.type : 'Header');
     const [content, setContent] = useState(props.component ? props.component.content : '');
     const [imageId, setImageId] = useState(props.component && props.component.imageId ? props.component.imageId : null);
     const [images, setImages] = useState([]);
-    const [selectedImage, setSelectedImage] = useState();
+    const [selectedImage, setSelectedImage] = useState({id : 0});
+
+    useEffect(() => {
+      setOrderId(props.component ? props.component.orderId : props.index+1);
+      setType(props.component ? props.component.type : 'Header');
+      setContent(props.component ? props.component.content : '')
+      setImageId(props.component && props.component.imageId ? props.component.imageId : null);
+
+    }, [props.preview])
+
+
 
     useEffect(() => {
     API.getImages().then( (images) => {
@@ -34,28 +44,49 @@ const Component = (props) => {
           imageId: imageId,
         };
             
-        props.setComponents((prevComponents) =>
-          prevComponents.map((prevComponent, index) => {
+        props.setComponents((Components) =>
+          Components.map((Component, index) => {
             if (index === props.index) {
-              return { ...prevComponent, ...component };
+              return { ...Component, ...component };
             }
-            return prevComponent;
-          })
+            return Component;
+          }).sort((a, b) => a.orderId - b.orderId)
         );
+
+
+        props.setIsModified((isModified) => !isModified);
+
+
       }, [orderId, content, type, imageId]);
       
 const deleteComponent = () => {
-        props.setComponents((prevComponents) =>
-          prevComponents.filter((_, index) => index !== props.index)
+        props.setComponents((Components) =>
+          Components.filter((_, index) => index !== props.index)
         );
         props.setNumComps((num)=>num-1)
-        props.setIsDeleted((isDeleted) => !isDeleted);
+        props.setIsModified((isModified) => !isModified);
     }
       
 
-  const handleOrderIdChange = (event) => {
-    setOrderId(event.target.value);
-  };
+    const handleOrderIdChange = (sign) => {
+
+      let value = orderId
+      switch (sign) {
+        case '+' : value++ ; break ;
+        case '-' : value-- ; break ;}
+
+      props.setComponents((Components) =>
+        Components.map((Component) => {
+          if (Component.orderId == value) {
+            console.log(Component)
+            return { ...Component, orderId: props.component.orderId };
+          }
+          return Component;
+        })
+    );
+    setOrderId(value)
+ };
+    
 
   const handleTypeChange = (event) => {
     setType(event.target.value);
@@ -73,11 +104,16 @@ const deleteComponent = () => {
     <Row>
       <Col md={6}>
         <Form >
-          <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }} >
-            <Form.Label>Order</Form.Label>
-            <Form.Control type="number" required={true} value={orderId} onChange={handleOrderIdChange} />
-          </Form.Group>
-
+        <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }}>
+                <Form.Label>Order</Form.Label>
+                        <div className="d-flex">
+                               <Button variant="light" onClick={() => handleOrderIdChange('-')} disabled={orderId <= 1}>
+                                        <i className="bi bi-caret-up-fill" />
+                               </Button>
+                           <Button variant="light" onClick={() => handleOrderIdChange('+')} disabled={orderId >= props.max}>
+                               <i className="bi bi-caret-down-fill" />
+                           </Button> </div>
+                </Form.Group>
           <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }}>
                     <Form.Label>Type</Form.Label>
                     <Form.Select value={type} onChange={handleTypeChange}>
@@ -100,7 +136,6 @@ const deleteComponent = () => {
           </Form.Group>
           </>
          :
-
           <Form.Group className="mb-3"style={{ color: '#1560BD', marginTop: '1vh',  padding: '30px' }}  >
             <Form.Label>Content</Form.Label >
             <Form.Control type="text" value={content} onChange={handleContentChange} />

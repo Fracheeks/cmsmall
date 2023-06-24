@@ -103,7 +103,7 @@ function LoadingLayout(props) {
       <Col md={4} bg="light" className="below-nav" id="left-sidebar">
       </Col>
       <Col md={8} className="below-nav">
-        <h1>CMSmall is loading ...</h1>
+        <h1>is loading ...</h1>
       </Col>
     </Row>
   )

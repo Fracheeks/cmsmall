@@ -12,7 +12,7 @@ const Page = (props) => {
   const [components, setComponents] = useState(props.page ? props.page.components : []);
   const [numComps, setNumComps] = useState(props.page ?  props.page.components.length : 0);
   const [preview, setPreview] = useState([]);
-  const [isDeleted, setIsDeleted] = useState(false);
+  const [isModified, setIsModified] = useState(false);
   
   const navigate = useNavigate();
   const location = useLocation();
@@ -20,25 +20,29 @@ const Page = (props) => {
 
   useEffect(() => {
   //visualizza componenti già presenti nella pagina
-    const generatePreview = () => {  const newPreview = [];
-      for (let i = 0; i < numComps; i++) {
-        newPreview.push(
-          <Component
-            setIsDeleted={setIsDeleted}
-            setNumComps={setNumComps}
-            setComponents={setComponents}
-            key={i}
-            index={i}
-            pageId={props.page.id}
-            component={components[i]}
-          />
-        );
-      }
+    const generatePreview = () => { 
+
+       console.log(components
+      )
+
+      const newPreview = components.map((component, index) => (
+        <Component
+          setIsModified={setIsModified}
+          setNumComps={setNumComps}
+          max={components.length}
+          setComponents={setComponents}
+          preview={preview}
+          key={index}
+          index={index}
+          pageId={props.page.id}
+          component={component}
+        />
+      ));
       setPreview(newPreview);
     };
 
     generatePreview();
-  }, [isDeleted]);
+  }, [isModified]);
   
 
   const handleBackRoute = () => {
@@ -60,8 +64,9 @@ const Page = (props) => {
     };
     setComponents((prev) => [...prev, newComponent])
   }
+  setIsModified((isModified) => !isModified);
 
-  setPreview((prev) => [...prev, <Component setNumComps={setNumComps} setIsDeleted={setIsDeleted} setComponents={setComponents} key={numComps} index={numComps} pageId={props.page.id} component={components[numComps]} />]);
+  setPreview((prev) => [...prev, <Component setNumComps={setNumComps} max={components.length} numComps={numComps} setIsModified={setIsModified} setComponents={setComponents} key={numComps} index={numComps} pageId={props.page.id} component={components[numComps]} />]);
    setNumComps(numComps+1);
   }
   
@@ -113,10 +118,6 @@ const Page = (props) => {
           <Button className="mx-2" variant="light" type="submit">
             <i className="bi bi-download" style={{ color: '#1560BD' ,  padding: '30px'}} />
           </Button>
-          &nbsp;
-          <Button variant="light" className="mx-2" onClick={() => handleBackRoute()}>
-            <i className="bi bi-x-lg" style={{ color: '#1560BD' ,  padding: '30px'}} />
-          </Button>
           <Button variant="light" className="mx-2" onClick={() => handleNumComps("+")}>
                  <i className="bi bi-plus-lg" style={{ color: '#1560BD', padding: '30px' }} />
           </Button>
@@ -130,7 +131,10 @@ const Page = (props) => {
         </div>
         </Col>
     </Row>
-    {preview}
+     {preview}
+    <Button variant="light" className="mr-auto mx-2" onClick={() => handleBackRoute()}>
+            <i className="bi bi-backspace-fill" style={{ color: '#1560BD' ,  padding: '30px'}} />
+    </Button>
      </>  
   );
 };

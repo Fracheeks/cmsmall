@@ -53,8 +53,8 @@ return ({
   creationDate : dayjs(page?.creationDate).format("YYYY-MM-DD"), 
   publicationDate : dayjs(page?.publicationDate).format("YYYY-MM-DD"),
   status : page.status,
-  components : components
-    }) 
+  components : components.sort((a, b) => a.orderId - b.orderId)
+}) 
 }
 
 const getImages = async () => {
