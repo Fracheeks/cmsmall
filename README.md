@@ -123,8 +123,11 @@
 
 ## Users Credentials
 
-- username : Francesca , password : esame, email : francesca@test.com, role : Regular
-- username : Admin , password : esame, email : admin@test.com, role : Admin
-- username : Matteo , password : esame, email : matteo@test.com, role : Regular
-- username : Davide, password : esame, email : davide@test.com, role : Regular
+Username | Password | Email             | Role    
+---------|----------|-------------------|---------
+Francesca| esame    | francesca@test.com| Regular 
+Admin    | esame    | admin@test.com    | Admin   
+Matteo   | esame    | matteo@test.com   | Regular 
+Davide   | esame    | davide@test.com   | Regular 
+
 
