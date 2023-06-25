@@ -19,18 +19,44 @@
 
 ## API Server
 
-- POST `/api/login`
-  - request parameters and request body content
-  - response body content
+- GET `/api/application`
+  - parameters : null
+  - response : name (nome dell'applicazione)
+- POST `/api/application/:name`
+  - parameters : name (nome dell'applicazione)
+  - response : name (nome dell'applicazione)
+- GET `/api/users`
+  - parameters : null
+  - response : users (lista degli utenti)
 - GET `/api/pages/:filter`
-  - request parameters : filtro per la selezione delle tuple in base allo stato (all/published/scheduled/draft)
-  - response body content : oggetto json contenente le informazioni base di tutte la pagine e in aggiunta il nome dell'authore della pagina
+  - parameters : filter 
+(filtraggio basato sullo stato, 'all' => ritona tutte le pagine)
+  - response : users (lista delle pagine)
 - GET `/api/page/:id`
-  - request parameters : id della pagina
-  - response body content : oggetto json contenente le informazioni base della pagina richiesta e in aggiunta il nome dell'authore della pagina
-- GET `/api/components/:id` 
-  - request parameters : id della pagina di riferimento per i componenti
-  - response body content : array contenete la lista dei componenti riferiti ad ogni pagina
+  - parameters : id (identificativo della pagina)
+  - response : components (componenti della pagina richiesta)
+- POST `/api/pages`
+  - parameters : null
+  - response : pagina creata
+- POST `/api/pages/:id`
+  - parameters : id (identificativo della pagina modificata )
+  - response : pagina modificata
+- DELETE `/api/pages/:id`
+  - parameters : id (identificativo della pagina da eliminare)
+  - response : null
+- POST `/api/author/:pageId/:authorId`
+  - parameters : id (identificativo della pagina) e authorId (identificativo del nuovo autore)
+  - response : authorId (identificativo del nuovo autore)
+- POST `/api/session`
+  - parameters : null
+  - response : user (utente)
+- GET `/api/session/current`
+  - parameters : user (utente)
+  - response : null
+- DELETE `/api/session/current`
+  - parameters : user (utente)
+  - response : null
+
 
 ## Database Tables
 
@@ -69,20 +95,36 @@
 
 ## Main React Components
 
-- `ListOfSomething` (in `List.js`): component purpose and main functionality
-- `GreatButton` (in `GreatButton.js`): component purpose and main functionality
-- ...
+- `ViewForm` (in `ViewForm.jsx`): ha il ruolo di far visualizzare i componenti aggiuntivi relativi alla pagina
 
-(only _main_ components, minor ones may be skipped)
+- il file `PageLayout.js` fa da wrapper ad una serie di componenti:
+  - NotFoundLayout : Layout per la visualizzazione di errore 
+  - DefaultLayout : Layout per la visualizzazione delle schermate principali di Front-Office e Back-Office
+  - LoadingLayout : Layout per il caricamento dati
+  - LoginLayout : Layout per la effettuare il login  
+  - ViewLayout : Layout per la visualizzazione della pagina con i corrispettivi componenti
+  - EditPageLayout : Layout per la modifica di una pagina e dei suoi componenti
+  - AddPageLayout: layout per l'aggiunta di una pagina insiema ai suoi componenti
+
+- `PageForm` (in `PageForm.jsx`): visualizzazione delle pagine e delle loro informazioni tramite il componente "Card" di React-Boostrap. In base allo stato 'isFront', verrà visualizzato alternativamente il Front-Office o il Back-Office, le pagine filtrate e i relativi 'Button' per effettuare modiche/eliminazione di pagine o l'eventuale aggiunta.
+
+- `Page` (in `PageForm.jsx`): serve per l'aggiunta, la modifica e la visualizzazione dell'anteprima di una pagina in maniera dinamica.
+
+- `Component` (in `Component.jsx`): serve per l'aggiunta, la modifica, l'eliminazione e la visualizzazione dell'anteprima di un componente di una pagina in maniera dinamica.
+
+- `Navigation` (in `Navigation.jsx`): serve per la gestione della navbar e dei suoi elementi e della loro eventuale visualizzazione o meno in base ai valore assegnati agli stati 'opsNavbar', 'isFront' e 'editMode'
+
+- `LoginForm` (in `Auth.jsx`): serve per convalidare il profilo di un utente o , eventualmente, di bloccarne l'accesso in base a delle credenziali errate, mostrando un messaggio di errore.
+
 
 ## Screenshot
 
-![Screenshot](./img/screenshot.jpg)
+![Screenshot](./screenshot/screenshot.jpg)
 
 ## Users Credentials
 
-- username : Francesca , password : esame, email : francesca@test.com
-- username : Admin , password : esame, email : admin@test.com
-- username : Matteo , password : esame, email : matteo@test.com
-- username : Davide, password : esame, email : davide@test.com
+- username : Francesca , password : esame, email : francesca@test.com, role : Regular
+- username : Admin , password : esame, email : admin@test.com, role : Admin
+- username : Matteo , password : esame, email : matteo@test.com, role : Regular
+- username : Davide, password : esame, email : davide@test.com, role : Regular
 
