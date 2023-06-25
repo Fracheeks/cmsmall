@@ -90,7 +90,6 @@ const Page = (props) => {
   const handleAuthorChange = (event) => {
     API.setAuthor(props.page.id, event.target.value).then((authorId)=>{
      setAuthorId(authorId)
-     console.log(authorId)}
     )
     .catch(err => props.handleError(err))
   };

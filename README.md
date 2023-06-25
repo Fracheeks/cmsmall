@@ -6,11 +6,16 @@
 
 - Route `/`: una volta che la pagina è stata caricata (setLoading(false)) , si accede tramite la DefaultRoute ai contenuti del file PageForm per la visualizzazione delle schermate di Front-Office/Back-Office, l'oggetto "isFront" che viene passato è utilizzato per discriminare la visualizzazione di funzionalià aggiuntive.
 
-- Route `/viewPage/:id`: l'obiettivo è quello di visualizzare informazioni aggiuntive relative alla pagina, le quali vengono recuperate tramite l'utilizzo della funzione getPage in API.jsx, alla quale viene prontamente passato il parametro "id" relativo alla pagina. l'utilizzo di setNavOps permette di nascondere elementi della navbar superflui.
+- Route `/viewPage/:id`: l'obiettivo è quello di visualizzare informazioni aggiuntive relative alla pagina, le quali vengono recuperate tramite l'utilizzo della funzione getPage in API.jsx, alla quale viene prontamente passato il parametro "id" relativo alla pagina. l'utilizzo di setNavOps permette di nascondere elementi della navbar superflui a fini della visualizzazione o modifica/creazione di una pagina
 
 - Route `/login`: rispetto alle funzionalità standard, nella funzione del LogoutButton() ho aggiunto una callback che permette di essere reindirizzati alla pagina iniziale (Front-Office).
 
 - Route `*`: nel caso di inserimento di url non valido, si viene reindirizzati ad una pagina di errore.
+
+- Route `/editPage/:id`: serve per editare la pagina, aggiungere/eliminare componenti in maniera dinamica e visualizzarne un'anteprima tramite le funzionalità offerte in Page.jsx e Component.jsx.
+
+- Route `/addPage` : serve per poter craere un nuovo componente partendo da zero. La creazione è vincolata a livello server, dove vengono fatti dei controlli per validitare che la pagina abbia determinate caratteristiche.
+
 
 ## API Server
 

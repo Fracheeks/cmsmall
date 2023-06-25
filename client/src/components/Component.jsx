@@ -18,6 +18,7 @@ const Component = (props) => {
       setType(props.component ? props.component.type : 'Header');
       setContent(props.component ? props.component.content : '')
       setImageId(props.component && props.component.imageId ? props.component.imageId : null);
+      setSelectedImage(images[imageId-1])
 
     }, [props.preview])
 
