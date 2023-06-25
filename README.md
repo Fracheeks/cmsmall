@@ -93,6 +93,9 @@
     - name : breve descrizione immagine
     - url : path relativo per individuare la posizione dell'immagine
 
+  - Table `application` utilizzata per salvare lato server il nome dell'applicazione
+    - name : nome corrente applicazione
+
 ## Main React Components
 
 - `ViewForm` (in `ViewForm.jsx`): ha il ruolo di far visualizzare i componenti aggiuntivi relativi alla pagina
