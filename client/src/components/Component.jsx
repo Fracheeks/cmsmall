@@ -9,7 +9,7 @@ const Component = (props) => {
     const [content, setContent] = useState(props.component ? props.component.content : '');
     const [imageId, setImageId] = useState(props.component && props.component.imageId ? props.component.imageId : null);
     const [images, setImages] = useState([]);
-    const [selectedImage, setSelectedImage] = useState({id : 0});
+    const [selectedImage, setSelectedImage] = useState({});
 
     useEffect(() => {
       setOrderId(props.component ? props.component.orderId : props.index+1);
@@ -120,10 +120,10 @@ const deleteComponent = () => {
                              <option value="Image">Image</option>
                      </Form.Select>
           </Form.Group>
-          { type === 'Image' && selectedImage?  <>
+          { type === 'Image'?  <>
           <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }}>
                     <Form.Label>Please select an image:</Form.Label>
-                    <Form.Select value={selectedImage.id} onChange={handleImageChange}>
+                    <Form.Select value={selectedImage ? selectedImage.id : 1} onChange={handleImageChange}>
                         {images.map((image) => (
                                  <option key={image.id} value={image.id}>
                               {image.name}
@@ -142,8 +142,8 @@ const deleteComponent = () => {
         </Form>
       </Col>
       <Col md={6}>
-        { type === 'Image'  && selectedImage?  <>
-        <img src={"/src/components/" + selectedImage.url} alt="Component Image" style={{ marginTop: '20vh', width: '300px', height: '200px', objectFit: 'contain' }} /></> 
+        { type === 'Image'?   <>
+        <img src={"/src/components/" + (selectedImage ? selectedImage.url : "images/ironman.jpg")} alt="Component Image" style={{ marginTop: '20vh', width: '300px', height: '200px', objectFit: 'contain' }} /></> 
         :
          <><div className="preview" >         
             <p  style={{ color: '#969696', marginTop: '20vh' }}>{content} </p> 

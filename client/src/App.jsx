@@ -64,14 +64,13 @@ function App() {
     await API.logOut();
     setLoggedIn(false);
     setUser(undefined);
-    /* set state to empty if appropriate */
   }
   
 
   const loginSuccessful = (user) => {
     setUser(user);
     setLoggedIn(true);
-    setDirty(true);  // load latest version of data, if appropriate
+    setDirty(true);  
   }
 
 

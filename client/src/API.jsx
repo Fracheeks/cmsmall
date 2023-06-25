@@ -160,7 +160,7 @@ const updatePage = async (page) =>{
 const addPage = async (page) => {
 
 const response = await
-          fetch(SERVER_URL + "pages/", {
+          fetch(SERVER_URL + "pages", {
           method: 'POST',
           headers: {
           'Content-Type': 'application/json',},

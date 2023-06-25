@@ -241,7 +241,7 @@ app.post('/api/pages',
       return res.status(422).json({ error: errors.array().join(", ") }); // error message is a single string with all error joined together
     }
 
-    if(!checkPublicationDate(req.body.publicationDate, req.body.creationDate)) {
+    if(!checkPublicationDate(req.body?.publicationDate, req.body.creationDate)) {
       return res.status(400).json({ error: "Invalid publication date"})
     }
     try {
@@ -301,14 +301,16 @@ app.put('/api/pages/:id',
 
       const page = {
         id: req.body.id,
+        title : req.body.title,
         authorId: req.user.id,
-        creationDate: req.body?.creationDate,
-        publicationDate: req.body?.publicationDate,
+        creationDate: req.body.creationDate,
+        publicationDate: req.body.publicationDate,
         status : defineStatus(req.body?.publicationDate)
 
       };
 
-      result = await pagesDao.updatePage(req.user.id, page.id, page);
+
+      result = await pagesDao.updatePage(page);
 
       const deleteComponents =  pagesDao.deleteComponents(req.body.id)
 

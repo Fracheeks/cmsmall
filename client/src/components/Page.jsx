@@ -107,7 +107,7 @@ const Page = (props) => {
     <Row>
       <Col md={6}>
         <Form onSubmit={handleSubmit}  >
-          { props.user?.role == 'Admin' && (<>
+          { props.user?.role == 'Admin' && props.page &&  (<>
             <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }} >
             <Form.Label>Author</Form.Label>
             <Form.Select value={authorId} onChange={handleAuthorChange}>

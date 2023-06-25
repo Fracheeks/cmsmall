@@ -165,7 +165,7 @@ exports.updatePage = (page) => {
     }
     return new Promise((resolve, reject) => {
         const sql = 'UPDATE pages SET authorId=?, title=?, creationDate=?, publicationDate=?, status=? WHERE id=?';
-        db.run(sql, [page.authorId, page.title, page.creationDate, page.publicationDate, page.status, page.pageId], function (err) {
+        db.run(sql, [page.authorId, page.title, page.creationDate, page.publicationDate, page.status, page.id], function (err) {
             if (err) {
                 reject(err);
             }
