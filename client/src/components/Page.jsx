@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import { Component } from './Component';
+import { Component } from './Component.jsx';
 import {useState, useEffect} from 'react';
 import {Form, Button, Row, Col} from 'react-bootstrap';
-import { useNavigate, useLocation } from 'react-router-dom';
-import API from '../API';
+import { useNavigate} from 'react-router-dom';
+import API from '../API.jsx';
 
 const Page = (props) => {
   const [authorId, setAuthorId] = useState(props.user?.id);
@@ -138,7 +138,7 @@ const Page = (props) => {
       <Col md={6}>
         <div className="preview" >
           <h5 style={{ color: '#5F5F5F', marginTop: '2vh' }}>Preview:</h5>
-          {props.user?.role == 'Admin' ? (
+          {props.user?.role == 'Admin' && props.page ? (
             <><p style={{ color: '#969696', marginTop: '2vh' }}>
             The actual owner is: {props.authors.find((author) => author.id==authorId).name}</p>
           <p style={{ color: '#969696', marginTop: '12vh' }}>Title: {title}</p>

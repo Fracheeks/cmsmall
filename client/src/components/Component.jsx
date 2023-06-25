@@ -1,8 +1,6 @@
-import dayjs from 'dayjs';
 import {useState, useEffect} from 'react';
 import {Form,  Row, Col, Button} from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import API from '../API';
+import API from '../API.jsx';
 
 const Component = (props) => {
 

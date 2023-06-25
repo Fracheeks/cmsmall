@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Button, Navbar, Nav, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { LogoutButton, LoginButton } from './Auth';
-import API from '../API';
+import { LogoutButton, LoginButton } from './Auth.jsx';
+import API from '../API.jsx';
 
 
 const Navigation = (props) => {

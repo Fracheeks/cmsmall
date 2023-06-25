@@ -1,7 +1,7 @@
 import { React, useState} from 'react';
 import { Form, Button, Alert, Col, Row, InputGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import API from '../API';
+import API from '../API.jsx';
 
 function LoginForm(props) {
   const [username, setUsername] = useState('');

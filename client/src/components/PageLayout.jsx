@@ -1,11 +1,11 @@
 import { React, useState, useEffect } from 'react';
-import { Row, Col, Button, Spinner, Container} from 'react-bootstrap';
+import { Row, Col, Button, Spinner} from 'react-bootstrap';
 import { Link,useParams , useNavigate} from 'react-router-dom';
-import PageForm from './PageForm';
-import {LoginForm} from  './Auth';
-import {ViewForm} from './ViewForm';
-import Page from './Page';
-import API from '../API';
+import PageForm from './PageForm.jsx';
+import {LoginForm} from  './Auth.jsx';
+import {ViewForm} from './ViewForm.jsx';
+import Page from './Page.jsx';
+import API from '../API.jsx';
 
 function DefaultLayout(props) {
 

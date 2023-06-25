@@ -4,8 +4,8 @@ const cors = require('cors');
 const dayjs = require('dayjs');
 const { check, validationResult, } = require('express-validator'); // validation middleware
 
-const userDao = require('./dao-users');
-const pagesDao = require('./dao');
+const userDao = require('./dao-users.js');
+const pagesDao = require('./dao.js');
 
 
 const app = express();

@@ -4,9 +4,9 @@ import './App.css';
 
 import { React, useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate} from 'react-router-dom';
-import { LoginForm } from './components/Auth';
-import { Navigation } from './components/Navigation';
-import { NotFoundLayout, LoginLayout, LoadingLayout, DefaultLayout , ViewLayout, EditPageLayout, AddPageLayout} from './components/PageLayout';
+import { LoginForm } from './components/Auth.jsx';
+import { Navigation } from './components/Navigation.jsx';
+import { NotFoundLayout, LoadingLayout, DefaultLayout , ViewLayout, EditPageLayout, AddPageLayout} from './components/PageLayout.jsx';
 
 import API from './API';
 
