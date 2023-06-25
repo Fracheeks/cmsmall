@@ -119,7 +119,7 @@
 
 ## Screenshot
 
-![Screenshot](./screenshot/screenshot.png)
+![screenshot](./screenshot/screenshot.png)
 
 ## Users Credentials
 
