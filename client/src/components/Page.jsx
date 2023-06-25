@@ -88,8 +88,9 @@ const Page = (props) => {
   };
 
   const handleAuthorChange = (event) => {
-    API.setAuthor(props.page.id, event.target.value).then((authorId)=>
+    API.setAuthor(props.page.id, event.target.value).then((authorId)=>{
      setAuthorId(authorId)
+     console.log(authorId)}
     )
     .catch(err => props.handleError(err))
   };
@@ -108,7 +109,7 @@ const Page = (props) => {
     <Row>
       <Col md={6}>
         <Form onSubmit={handleSubmit}  >
-          { props.user.role == 'Admin' && (<>
+          { props.user?.role == 'Admin' && (<>
             <Form.Group className="mb-3" style={{ color: '#1560BD', marginTop: '1vh', padding: '30px' }} >
             <Form.Label>Author</Form.Label>
             <Form.Select value={authorId} onChange={handleAuthorChange}>
@@ -139,8 +140,14 @@ const Page = (props) => {
       <Col md={6}>
         <div className="preview" >
           <h5 style={{ color: '#5F5F5F', marginTop: '2vh' }}>Preview:</h5>
-          <p style={{ color: '#969696', marginTop: '2vh' }}>Title: {title}</p>
-          <p style={{ color: '#969696', marginTop: '12vh' }}>Publication Date: {publicationDate}</p>
+          {props.user?.role == 'Admin' ? (
+            <><p style={{ color: '#969696', marginTop: '2vh' }}>
+            The actual owner is: {props.authors.find((author) => author.id==authorId).name}</p>
+          <p style={{ color: '#969696', marginTop: '12vh' }}>Title: {title}</p>
+          <p style={{ color: '#969696', marginTop: '12vh' }}>Publication Date: {publicationDate}</p></>)
+           :
+           (<><p style={{ color: '#969696', marginTop: '2vh' }}>Title: {title}</p>
+           <p style={{ color: '#969696', marginTop: '12vh' }}>Publication Date: {publicationDate}</p></>)}
         </div>
         </Col>
     </Row>

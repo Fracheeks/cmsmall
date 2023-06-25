@@ -103,7 +103,7 @@ exports.getComponents = (pageId) => {
                   if (err) {
                       reject(err);
                   }
-                  page.pageId = this.lastID;
+                  page.id = this.lastID;
                   resolve(page);
               });
           });
@@ -153,8 +153,6 @@ exports.deleteComponents = (pageId) => {
             if (err) {
                 reject(err);
             }
-            if (this.changes == 0)
-                resolve({ error: 'No components deleted.' });
             else
                 resolve(null);
         });

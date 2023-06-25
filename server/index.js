@@ -226,7 +226,7 @@ const defineStatus = (publicationDate) =>{
 }
 
 checkPublicationDate = (publicationDate, creationDate) =>{
-  return publicationDate<creationDate ? 0 : 1;
+  return new Date(publicationDate)<new Date(creationDate) ? 0 : 1;
 }
 
 app.post('/api/pages', 
@@ -378,9 +378,11 @@ isLoggedIn,
       return res.status(400).json({error : "Unauthorized"});
     }
 
-    if(pagesDao.getUsers.every(user => user.id != req.params.authorId)){
-      return res.status(400).json({error : "user not found"});
-    }
+   pagesDao.getUsers().then( 
+      (users) => {
+         if(users.every(user => user.id != req.params.authorId)){
+               return res.status(400).json({error : "user not found"})}
+    })
 
     try {
       const result = await pagesDao.setAuthor(req.params.pageId, req.params.authorId)

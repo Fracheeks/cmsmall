@@ -33,7 +33,6 @@ function DefaultLayout(props) {
       });
 
       API.getUsers().then((users) => {
-        console.log(users)
         setAuthors(users.map((user) => ({ id : user.id, name : user.name})))})
         .catch((err)=>props.handleError(err))
 

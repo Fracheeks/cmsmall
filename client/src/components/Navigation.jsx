@@ -105,7 +105,7 @@ const Navigation = (props) => {
       />
       </Form>
        <Nav className="ml-md-auto">
-        {props.user && props.user.name && (
+        {props.user && props.user?.name && (
           <Nav.Link onClick = {handleRouteChange}>
             {route}
           </Nav.Link>

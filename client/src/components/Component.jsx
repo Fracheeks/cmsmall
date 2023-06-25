@@ -144,10 +144,10 @@ const deleteComponent = () => {
       </Col>
       <Col md={6}>
         { type === 'Image'  && selectedImage?  <>
-        <img src={"/src/components/" + selectedImage.url} alt="Component Image" style={{ marginTop: '7vh', width: '300px', height: '200px', objectFit: 'contain' }} /></> 
+        <img src={"/src/components/" + selectedImage.url} alt="Component Image" style={{ marginTop: '20vh', width: '300px', height: '200px', objectFit: 'contain' }} /></> 
         :
          <><div className="preview" >         
-            <p  style={{ color: '#969696', marginTop: '7vh' }}>{content} </p> 
+            <p  style={{ color: '#969696', marginTop: '20vh' }}>{content} </p> 
          </div> </> }
 
         </Col>
