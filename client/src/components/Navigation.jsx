@@ -31,17 +31,12 @@ const Navigation = (props) => {
     props.setPages(filteredItems)
   };
 
-  const handleRouteChange = () => {
-    props.setFront(!props.isFront)}
-
   useEffect(() => {
     if (searchQuery === '') {
       handleReset();
     }
   }, [searchQuery]);
   
-  const navigate = useNavigate();
-
   useEffect (() => {
     props.isFront? setRoute('Back-Office') : setRoute('Front-Office')
     props.isFront? props.setFilter('published') : props.setFilter('all')
@@ -106,7 +101,7 @@ const Navigation = (props) => {
       </Form>
        <Nav className="ml-md-auto">
         {props.user && props.user?.name && (
-          <Nav.Link onClick = {handleRouteChange}>
+          <Nav.Link onClick = {()=> props.setFront(!props.isFront)}>
             {route}
           </Nav.Link>
         )}
